@@ -1,2 +1,0 @@
-# DoubleM
-It's DoubleM
