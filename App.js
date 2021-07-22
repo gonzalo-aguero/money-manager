@@ -1,21 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import React, { useState } from 'react';
+import {Text, View} from 'react-native';
+import Home from './views/Home';
+const App = ()=>{
+    const [view, setView] = useState(0);
+    const viewData = {
+        view: view,
+        setViewMethod: setView
+    };
+    const showCurrentView = ()=>{
+        const home = <Home viewData={viewData}></Home>;
+        let viewToDisplay = home;
+        switch (view) {
+            case 0:
+                viewToDisplay = home;
+                break;
+            case 1:
+                viewToDisplay = <Text>View not found</Text>;
+                break;
+            default:
+                viewToDisplay = home;
+                break;
+        }
+        return viewToDisplay;
+    }
+    return (
+        <View style={{backgroundColor: 'white'}}>
+            {showCurrentView()}
+        </View>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
