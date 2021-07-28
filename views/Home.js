@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import MainMenu from '../components/MainMenu/MainMenu';
-import Styles from './styles';
+import Styles from '../modules/GlobalStyles';
 const Home = (props)=>{
     const dataForChildren = props.dataForChildren;
     return (

@@ -7,8 +7,9 @@ const Styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: '#151313',
-        marginTop: 24
+        // marginTop: 24
     },
+    mainScrollView: {},
     title: {
         fontSize: 30,
         marginTop: 5,
@@ -16,6 +17,12 @@ const Styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: 'white',
         width: "50%",
+        textAlign: 'center',
+        color: 'white'
+    },
+    title2: {
+        fontSize: 26,
+        marginBottom: 5,
         textAlign: 'center',
         color: 'white'
     },
@@ -32,6 +39,40 @@ const Styles = StyleSheet.create({
     badText: {
         color: '#C61E1E',
     },
+    goodBG: {
+        backgroundColor: 'green',
+    },
+    warningBG: {
+        backgroundColor: 'yellow',
+    },
+    badBG: {
+        backgroundColor: 'red',
+    },
+    form: {
+        padding: 15,
+        margin: 10,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        borderColor: '#C4C4C4',
+        borderWidth: .3,
+    },
+    formInput: {
+        backgroundColor: '#5A5A5A',
+        color: 'white',
+        padding: 4,
+        marginVertical: 7,
+
+    },
+    formSubmitButton: {
+        color: 'white',
+        marginVertical: 7,
+    },
+    formSubmitButtonText: {
+        color: 'white',
+        padding: 8,
+        fontSize: 17,
+        textAlign: 'center',
+    }
 });
 export default Styles;
 export function createTableStyles(columns = null){
@@ -44,9 +85,9 @@ export function createTableStyles(columns = null){
     const tableStyles = StyleSheet.create({
         table: {
             width: '100%',
-            maxHeight: '50%',
-            borderBottomWidth: .25,
+            borderBottomWidth: .3,
             borderColor: 'white',
+            marginBottom: 15,
         },
         tableRow: {
             display: 'flex',

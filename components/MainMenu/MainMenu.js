@@ -11,7 +11,7 @@ const MainMenu = (props)=>{
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            marginBottom: 48,
+            // marginBottom: 48,
             position: 'absolute',
             bottom: 0,
         },
@@ -26,10 +26,10 @@ const MainMenu = (props)=>{
     });
     return (
         <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView(0) }>
+            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView('home') }>
                 <Text style={styles.menuButtonText}>Home</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView(1) }>
+            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView('accounts') }>
                 <Text style={styles.menuButtonText}>Accounts</Text>
             </TouchableOpacity>
         </View>
