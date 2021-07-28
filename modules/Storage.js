@@ -16,15 +16,18 @@ export async function defaultSave(value = null, key = null){
         key = "DefaultKey-" + Date.now();
     }
     value = JSON.stringify(value);//Saved as a String
-    await AsyncStorage.setItem(key, value, (error)=>{
+    const result = await AsyncStorage.setItem(key, value, (error)=>{
         if(error !== null){
             console.error(error);
+            return false;
         }else{
             const msg = `Data was successfully saved as "${key}"`;
             console.log(msg);
             Alert.alert("Success","The data was saved correctly");
+            return true;
         }
     });
+    return result;
 }
 export async function defaultGet(key = null) {
     if(key === null){
