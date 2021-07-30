@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import {View, StatusBar} from 'react-native';
+import MainMenu from './components/MainMenu/MainMenu';
 import Home from './views/Home';
-import Accounts from './views/Accounts/Accounts';
+import Expenses from './views/Expenses';
+import Accounts from './views/Accounts';
 const App = ()=>{
     const [view, setView] = useState(0);
     const setViewForChildren = (view)=>{
@@ -15,12 +17,16 @@ const App = ()=>{
         }
     };
     const currentView = ()=>{
-        const home = <Home dataForChildren={dataForChildren}></Home>;
-        const accounts = <Accounts dataForChildren={dataForChildren}></Accounts>;
+        const home = <Home></Home>;
+        const expenses = <Expenses></Expenses>;
+        const accounts = <Accounts></Accounts>;
         let viewToDisplay = home;
         switch (view) {
             case 'home':
                 viewToDisplay = home;
+                break;
+            case 'expenses':
+                viewToDisplay = expenses;
                 break;
             case 'accounts':
                 viewToDisplay = accounts;
@@ -35,6 +41,7 @@ const App = ()=>{
         <View style={{backgroundColor: 'white'}}>
             <StatusBar barStyle="default"></StatusBar>
             {currentView()}
+            <MainMenu dataForChildren={dataForChildren} ></MainMenu>
         </View>
     );
 }

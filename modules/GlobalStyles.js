@@ -1,4 +1,14 @@
 import {StyleSheet} from 'react-native';
+export const Global = {
+    color: {
+        darkGreyBG: "#151313",
+        darkGreyBG2: "#2B2B2A",
+        lightBlue: "#4DC1A7",
+        goodGreen: "#5AC61E",
+        goodGreenBG: "#13AA13",
+        lightColor: "white",
+    }
+};
 const Styles = StyleSheet.create({
     mainContainer: {
         display: 'flex',
@@ -6,32 +16,34 @@ const Styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        backgroundColor: '#151313',
-        // marginTop: 24
+        backgroundColor: Global.color.darkGreyBG,
     },
-    mainScrollView: {},
+    mainScrollView: {
+        width: '100%',
+        marginBottom: '15%',
+    },
     title: {
         fontSize: 30,
         marginTop: 5,
         marginBottom: 5,
         borderBottomWidth: 1,
-        borderColor: 'white',
+        borderColor: Global.color.lightColor,
         width: "50%",
         textAlign: 'center',
-        color: 'white'
+        color: Global.color.lightColor
     },
     title2: {
         fontSize: 26,
         marginBottom: 5,
         textAlign: 'center',
-        color: 'white'
+        color: Global.color.lightColor
     },
     text: {
-        color: 'white',
+        color: Global.color.lightColor,
         fontSize: 16
     },
     goodText: {
-        color: '#5AC61E'
+        color: Global.color.goodGreen
     },
     warningText: {
         color: '#CDD21B',
@@ -40,14 +52,16 @@ const Styles = StyleSheet.create({
         color: '#C61E1E',
     },
     goodBG: {
-        backgroundColor: 'green',
+        backgroundColor: Global.color.goodGreenBG,
+        color: Global.color.lightColor,
     },
     warningBG: {
         backgroundColor: 'yellow',
+        color: Global.color.lightColor,
     },
     badBG: {
         backgroundColor: 'red',
-        color: 'white',
+        color: Global.color.lightColor,
     },
     form: {
         padding: 15,
@@ -59,7 +73,7 @@ const Styles = StyleSheet.create({
     },
     formInput: {
         backgroundColor: '#5A5A5A',
-        color: 'white',
+        color: Global.color.lightColor,
         padding: 4,
         marginVertical: 7,
         borderRadius: 3
@@ -68,19 +82,28 @@ const Styles = StyleSheet.create({
         color: '#C6C6C6'
     },  
     formSubmitButton: {
-        color: 'white',
+        color: Global.color.lightColor,
         marginVertical: 7,
         borderRadius: 3
     },
     formSubmitButtonText: {
-        color: 'white',
+        color: Global.color.lightColor,
         padding: 8,
         fontSize: 17,
         textAlign: 'center',
     },
+    actionBar: {
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        width:'100%',
+        backgroundColor: Global.color.darkGreyBG2,
+        padding: 10,
+    },
     button: {
         fontSize: 16,
-        padding: 5,
+        padding: 7,
+        borderRadius: 3
     },
     disableButton: {
         opacity: 0.5,
@@ -97,10 +120,8 @@ export function createTableStyles(columns = null){
     const tableStyles = StyleSheet.create({
         table: {
             width: '100%',
-            borderBottomWidth: .3,
-            borderColor: 'white',
-            marginBottom: 15,
-            maxHeight: '20%',
+            height: '25%',
+            maxHeight: '25%',
         },
         tableRow: {
             display: 'flex',
@@ -111,14 +132,14 @@ export function createTableStyles(columns = null){
             paddingHorizontal: 15,
         },
         tableHeadCell: {
-            color: 'white',
+            color: Global.color.lightColor,
             fontSize: 18,
             fontWeight: 'bold',
             width: columnWidth,
             textAlign: 'center',
         },
         tableCell: {
-            color: 'white',
+            color: Global.color.lightColor,
             fontSize: 16,
             width: columnWidth,
             textAlign: 'center',

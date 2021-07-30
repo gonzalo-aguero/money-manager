@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import {View, Text, Alert, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
-import { defaultSave, defaultGet } from '../../modules/Storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { defaultSave } from '../../modules/Storage';
 const CreateAccountForm = (props)=>{
     const dataKey = props.dataKey;
     const getAccounts = props.getAccounts;
@@ -17,10 +16,24 @@ const CreateAccountForm = (props)=>{
         if(currentAccounts === null){
             currentAccounts = [];
         }
+
+        // Calculate the new ID.
+        let newId = currentAccounts !== null ? currentAccounts.length + 1 : 1;
+        let index = currentAccounts.findIndex( account => account.id === newId);
+        console.log("New ID:",newId);
+        if(index !== -1){
+            newId = 0;
+            do {
+                newId++;
+                index = currentAccounts.findIndex( account => account.id === newId);
+                console.log("New ID reiterada:",newId);
+            } while (index !== -1); 
+        }
+        
         currentAccounts.push({
-            id: currentAccounts !== null ? currentAccounts.length + 1 : 1,
+            id: newId,
             name: accountName,
-            reserve: accountReserve,
+            reserve: parseFloat(accountReserve),
             description: accountDescription
         });
         await defaultSave(currentAccounts, dataKey);
@@ -48,8 +61,12 @@ const CreateAccountForm = (props)=>{
                 value={accountReserveInputText}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
-                    setAccountReserve(value);
-                    setaccountReserveInputText(value);
+                    if(isNaN(value)){
+                        value = 0;
+                    }else{
+                        setAccountReserve(value);
+                        setaccountReserveInputText(value);
+                    }
                 }}
             />
             <TextInput 
@@ -65,9 +82,7 @@ const CreateAccountForm = (props)=>{
                 }}
             />
             <TouchableOpacity
-                title="Submit"
                 onPress={ submitButtonHandler }
-                color={GlobalStyles.goodBG.backgroundColor}
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
                 <Text style={GlobalStyles.formSubmitButtonText}>Create</Text>
