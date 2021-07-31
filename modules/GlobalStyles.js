@@ -3,10 +3,12 @@ export const Global = {
     color: {
         darkGreyBG: "#151313",
         darkGreyBG2: "#2B2B2A",
+        greyInputBG: "#5A5A5A",
         lightBlue: "#4DC1A7",
         goodGreen: "#5AC61E",
         goodGreenBG: "#13AA13",
         lightColor: "white",
+
     }
 };
 const Styles = StyleSheet.create({
@@ -72,7 +74,7 @@ const Styles = StyleSheet.create({
         borderWidth: .3,
     },
     formInput: {
-        backgroundColor: '#5A5A5A',
+        backgroundColor: Global.color.greyInputBG,
         color: Global.color.lightColor,
         padding: 4,
         marginVertical: 7,

@@ -14,7 +14,12 @@ const Expenses = ()=>{
     const [selectedExpense, selectExpense] = useState(false);
     const getExpenses = async ()=>{
         const result = await defaultGet(dataKey);
-        setExpenses(result);
+        if(result === null || result === ""){
+            setExpenses([]);
+        }else{
+            setExpenses(result);
+        }
+        // console.log(`The follow data corresponds to the expenses: "${expenses}"`);
     }
     useEffect(() => {
         getExpenses();

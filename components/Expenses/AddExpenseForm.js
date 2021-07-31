@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
-import GlobalStyles from '../../modules/GlobalStyles';
+import React, { useState, useEffect} from 'react';
+import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet} from 'react-native';
+import GlobalStyles, { Global } from '../../modules/GlobalStyles';
+import { accountsDataKey, getAccounts } from '../../views/Accounts';
 import { defaultSave } from '../../modules/Storage';
+import DropDown, { Select, Option, OptionList } from 'react-native-selectme';
+import RNPickerSelect from 'react-native-picker-select';
 const AddExpenseForm = (props)=>{
     const dataKey = props.dataKey;
     const getExpenses = props.getExpenses;
+
+    const [accounts,setAccounts] = useState([]);
+    const [accountsForSelect, setAccountsForSelect] = useState([]);
 
     const [affectedAccountInputText, setAffectedAccountInputText] = useState("");
     const [amountInputText, setAmountInputText] = useState("");
@@ -24,10 +30,18 @@ const AddExpenseForm = (props)=>{
         setNoteInputText("")
         getExpenses();
     }
+    useEffect(()=>{
+        getAccounts(setAccounts);
+        setAccountsForSelect(accounts.map( account => {
+            return {label: account.name, value: account.id};
+        }));
+        console.log(accountsForSelect);
+        
+    }, []);
     return (
         <View style={GlobalStyles.form}>
             <Text style={GlobalStyles.title2}>Add a new expense</Text>
-            <TextInput 
+            {/* <TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Affected acount"
                 value={affectedAccountInputText}
@@ -36,7 +50,26 @@ const AddExpenseForm = (props)=>{
                     // setAffectedAccount(value);
                     setAffectedAccountInputText(value);
                 }}
-            />
+            /> */}
+            <Select>
+                <Option>Hola</Option>
+            </Select>
+            <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
+                { accountsForSelect.length < 1 ? null : 
+                    <RNPickerSelect
+                        style={pickerSelectStyles}
+                        onValueChange={ value => {
+                            console.log("Selected value: \""+value+"\"");
+                            setAffectedAccountInputText(value);
+                        }}
+                        items={accountsForSelect}
+                        placeholder={{
+                            label: 'Select the account to affect',
+                            value: null
+                        }}
+                    />
+                }
+            </View>
             <TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Amount (Example: 17489.99)"
@@ -83,3 +116,21 @@ const AddExpenseForm = (props)=>{
     );
 }
 export default AddExpenseForm;
+const pickerSelectStyles = StyleSheet.create({
+    container: {
+        paddingVertical: 7.5,
+        paddingHorizontal: 0,
+    },
+    inputIOS: {
+        backgroundColor: 'red',
+        borderWidth: 0.5,
+        borderColor: 'white',
+        color: 'white',
+    },
+    inputAndroid: {
+        backgroundColor: 'red',
+        borderWidth: 0.5,
+        borderColor: 'white',
+        color: 'white',
+    },
+});

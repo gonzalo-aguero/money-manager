@@ -5,17 +5,23 @@ import EditAccountForm from '../components/Accounts/EditAccountForm';
 import GlobalStyles,{ createTableStyles, Global} from '../modules/GlobalStyles';
 import { printAmount } from '../modules/Number';
 import { defaultSave, defaultGet } from '../modules/Storage';
+const dataKey = "accounts";
+const getAccounts = async (setFunction = false)=>{
+    const result = await defaultGet(dataKey);
+    if(setFunction){
+        setFunction(result);
+    }
+}
+export {
+    dataKey as accountsDataKey,
+    getAccounts
+};
 const Accounts = ()=>{
-    const dataKey = "accounts";
     const tableStyles = createTableStyles(3);
     const [createAccountForm, displayCreateAccountForm] = useState(false);//True to display create account form.
     const [editAccountForm, displayEditAccountForm] = useState(false);//True to display edit account form.
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, selectAccount] = useState(false);
-    const getAccounts = async ()=>{
-        const result = await defaultGet(dataKey);
-        setAccounts(result);
-    }
     const deleteAccount = async ()=>{
         let currentAccounts = accounts;
         if(currentAccounts === null || currentAccounts.length < 1){
@@ -34,7 +40,7 @@ const Accounts = ()=>{
                 onPress: async () => {
                     currentAccounts.splice(index,1);
                     await defaultSave(currentAccounts, dataKey);
-                    getAccounts();
+                    getAccounts(setAccounts);
                     selectAccount(false);//restart account selection to false
                 },
                 },
@@ -47,7 +53,7 @@ const Accounts = ()=>{
         );
     }
     useEffect(() => {
-        getAccounts();
+        getAccounts(setAccounts);
     }, []);
     return (
         <View style={GlobalStyles.mainContainer}>
