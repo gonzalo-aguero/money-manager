@@ -10,3 +10,5 @@ It's DoubleM
 * Tuesday 07-29-2021: 5 hours 30 minutes.
 ### Expenses
 * Friday 07-30-3021: 2 hours 30 minutes.
+## Week #2
+* Monday 08-02-2021: 0 hours:*

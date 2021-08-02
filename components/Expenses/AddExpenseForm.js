@@ -3,7 +3,7 @@ import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet} from 'react-
 import GlobalStyles, { Global } from '../../modules/GlobalStyles';
 import { accountsDataKey, getAccounts } from '../../views/Accounts';
 import { defaultSave } from '../../modules/Storage';
-import DropDown, { Select, Option, OptionList } from 'react-native-selectme';
+//import DropDown, { Select, Option, OptionList } from 'react-native-selectme';
 import RNPickerSelect from 'react-native-picker-select';
 const AddExpenseForm = (props)=>{
     const dataKey = props.dataKey;
@@ -37,11 +37,11 @@ const AddExpenseForm = (props)=>{
         }));
         console.log(accountsForSelect);
         
-    }, []);
+    });
     return (
         <View style={GlobalStyles.form}>
             <Text style={GlobalStyles.title2}>Add a new expense</Text>
-            {/* <TextInput 
+            {/*<TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Affected acount"
                 value={affectedAccountInputText}
@@ -50,19 +50,19 @@ const AddExpenseForm = (props)=>{
                     // setAffectedAccount(value);
                     setAffectedAccountInputText(value);
                 }}
-            /> */}
-            <Select>
+            />*/}
+            {/*<Select>
                 <Option>Hola</Option>
-            </Select>
+            </Select>*/}
             <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
                 { accountsForSelect.length < 1 ? null : 
                     <RNPickerSelect
+                        items={accountsForSelect}
                         style={pickerSelectStyles}
                         onValueChange={ value => {
                             console.log("Selected value: \""+value+"\"");
                             setAffectedAccountInputText(value);
                         }}
-                        items={accountsForSelect}
                         placeholder={{
                             label: 'Select the account to affect',
                             value: null
