@@ -2,26 +2,19 @@ import React, { useEffect, useState } from 'react';
 import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
 import CreateAccountForm from '../components/Accounts/CreateAccountForm';
 import EditAccountForm from '../components/Accounts/EditAccountForm';
-import GlobalStyles,{ createTableStyles, Global} from '../modules/GlobalStyles';
+import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
 import { printAmount } from '../modules/Number';
-import { defaultSave, defaultGet } from '../modules/Storage';
-const dataKey = "accounts";
-const getAccounts = async (setFunction = false)=>{
-    const result = await defaultGet(dataKey);
-    if(setFunction){
-        setFunction(result);
-    }
-}
-export {
-    dataKey as accountsDataKey,
-    getAccounts
-};
+import { defaultSave } from '../modules/Storage';
+import { AccountHooks } from '../hooks/hooks';
 const Accounts = ()=>{
     const tableStyles = createTableStyles(3);
     const [createAccountForm, displayCreateAccountForm] = useState(false);//True to display create account form.
     const [editAccountForm, displayEditAccountForm] = useState(false);//True to display edit account form.
     const [accounts, setAccounts] = useState([]);
     const [selectedAccount, selectAccount] = useState(false);
+    const getAccounts = async ()=>{
+        setAccounts(await AccountHooks.useGetAccounts());
+    }
     const deleteAccount = async ()=>{
         let currentAccounts = accounts;
         if(currentAccounts === null || currentAccounts.length < 1){
@@ -39,9 +32,10 @@ const Accounts = ()=>{
                 text: "Yes",
                 onPress: async () => {
                     currentAccounts.splice(index,1);
-                    await defaultSave(currentAccounts, dataKey);
-                    getAccounts(setAccounts);
-                    selectAccount(false);//restart account selection to false
+                    await defaultSave(currentAccounts, AccountHooks.useDataKey);
+                    displayEditAccountForm(false);
+                    selectAccount(false);//restart account selection to false.
+                    getAccounts();
                 },
                 },
                 // The "No" button
@@ -53,7 +47,7 @@ const Accounts = ()=>{
         );
     }
     useEffect(() => {
-        getAccounts(setAccounts);
+        getAccounts();
     }, []);
     return (
         <View style={GlobalStyles.mainContainer}>
@@ -92,7 +86,7 @@ const Accounts = ()=>{
                 </TouchableOpacity>
                 {/* Edit account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={ ()=> !editAccountForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
-                    <Text style={[GlobalStyles.button, {backgroundColor: Global.color.lightBlue, color: 'white'}, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ !editAccountForm ? "Edit account" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ !editAccountForm ? "Edit account" : "Hide form" }</Text>
                 </TouchableOpacity>
                 {/* Delete account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={deleteAccount}>
@@ -101,8 +95,8 @@ const Accounts = ()=>{
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
-                { editAccountForm ? <EditAccountForm accounts={accounts} selectedAccountId={selectedAccount} dataKey={dataKey} getAccounts={getAccounts} displayEditAccountForm={displayEditAccountForm} /> : null }
-                { createAccountForm ? <CreateAccountForm accounts={accounts} dataKey={dataKey} getAccounts={getAccounts} /> : null }
+                { editAccountForm ? <EditAccountForm accounts={accounts} getAccounts={getAccounts} selectedAccountId={selectedAccount} displayEditAccountForm={displayEditAccountForm} /> : null }
+                { createAccountForm ? <CreateAccountForm accounts={accounts} getAccounts={getAccounts} /> : null }
             </ScrollView>
         </View>
     );

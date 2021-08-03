@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
 import AddExpenseForm from '../components/Expenses/AddExpenseForm';
-// import EditExpenseForm from '../components/Expenses/EditExpenseForm';
-import GlobalStyles,{ createTableStyles, Global} from '../modules/GlobalStyles';
+//DEVELOP ---> import EditExpenseForm from '../components/Expenses/EditExpenseForm';
+import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
 import { printAmount } from '../modules/Number';
-import { defaultGet } from '../modules/Storage';
+import { ExpenseHooks } from '../hooks/hooks';
 const Expenses = ()=>{
-    const dataKey = "expenses";
     const tableStyles = createTableStyles(3);
     const [addExpenseForm, displayAddExpenseForm] = useState(false);//True to display create account form.
     const [editExpenseForm, displayEditAccountForm] = useState(false);//True to display edit account form.
     const [expenses, setExpenses] = useState([]);
     const [selectedExpense, selectExpense] = useState(false);
     const getExpenses = async ()=>{
-        const result = await defaultGet(dataKey);
-        if(result === null || result === ""){
-            setExpenses([]);
-        }else{
-            setExpenses(result);
-        }
-        // console.log(`The follow data corresponds to the expenses: "${expenses}"`);
+        setExpenses(await ExpenseHooks.useGetExpenses());
     }
     useEffect(() => {
         getExpenses();
@@ -61,21 +54,19 @@ const Expenses = ()=>{
                 </TouchableOpacity>
                 {/* Edit expense button */}
                 <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={ ()=> !editExpenseForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
-                    <Text style={[GlobalStyles.button, {backgroundColor: Global.color.lightBlue, color: 'white'}, (!selectedExpense ? GlobalStyles.disableButton : null)]}>{ !editExpenseForm ? "Edit expense" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedExpense ? GlobalStyles.disableButton : null)]}>{ !editExpenseForm ? "Edit expense" : "Hide form" }</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
-                {/* { editExpenseForm ? <EditExpenseForm selectedAccountId={selectedExpense} dataKey={dataKey} displayEditAccountForm={displayEditAccountForm} /> : null } */}
+                {/* { editExpenseForm ? <EditExpenseForm selectedAccountId={selectedExpense} displayEditAccountForm={displayEditAccountForm} /> : null } */}
                 { editExpenseForm ? Alert.alert("I'm sorry :(", "This function continuous in development.") : null }
-                { addExpenseForm ? <AddExpenseForm dataKey={dataKey} getExpenses={getExpenses} /> : null }
+                { addExpenseForm ? <AddExpenseForm /> : null }
             </ScrollView>
         </View>
     );
 }
 export default Expenses;
-
-
 // Expense structure
 // const expenseTemplate = {
 //     id: 1,

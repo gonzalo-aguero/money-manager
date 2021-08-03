@@ -1,15 +1,12 @@
 import {StyleSheet} from 'react-native';
-export const Global = {
-    color: {
-        darkGreyBG: "#151313",
-        darkGreyBG2: "#2B2B2A",
-        greyInputBG: "#5A5A5A",
-        lightBlue: "#4DC1A7",
-        goodGreen: "#5AC61E",
-        goodGreenBG: "#13AA13",
-        lightColor: "white",
-
-    }
+export const Colors = {
+    darkGreyBG: "#151313",
+    darkGreyBG2: "#2B2B2A",
+    greyInputBG: "#5A5A5A",
+    lightBlue: "#4DC1A7",
+    goodGreen: "#5AC61E",
+    goodGreenBG: "#13AA13",
+    lightColor: "white",
 };
 const Styles = StyleSheet.create({
     mainContainer: {
@@ -18,7 +15,7 @@ const Styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        backgroundColor: Global.color.darkGreyBG,
+        backgroundColor: Colors.darkGreyBG,
     },
     mainScrollView: {
         width: '100%',
@@ -29,23 +26,32 @@ const Styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
         borderBottomWidth: 1,
-        borderColor: Global.color.lightColor,
+        borderColor: Colors.lightColor,
         width: "50%",
         textAlign: 'center',
-        color: Global.color.lightColor
+        color: Colors.lightColor
     },
     title2: {
         fontSize: 26,
         marginBottom: 5,
         textAlign: 'center',
-        color: Global.color.lightColor
+        color: Colors.lightColor
+    },
+    title3: {
+        fontSize: 24,
+        marginBottom: 5,
+        color: Colors.lightColor
     },
     text: {
-        color: Global.color.lightColor,
+        color: Colors.lightColor,
         fontSize: 16
     },
+    text2: {
+        color: Colors.lightColor,
+        fontSize: 18
+    },
     goodText: {
-        color: Global.color.goodGreen
+        color: Colors.goodGreen
     },
     warningText: {
         color: '#CDD21B',
@@ -54,16 +60,16 @@ const Styles = StyleSheet.create({
         color: '#C61E1E',
     },
     goodBG: {
-        backgroundColor: Global.color.goodGreenBG,
-        color: Global.color.lightColor,
+        backgroundColor: Colors.goodGreenBG,
+        color: Colors.lightColor,
     },
     warningBG: {
         backgroundColor: 'yellow',
-        color: Global.color.lightColor,
+        color: Colors.lightColor,
     },
     badBG: {
         backgroundColor: 'red',
-        color: Global.color.lightColor,
+        color: Colors.lightColor,
     },
     form: {
         padding: 15,
@@ -74,8 +80,8 @@ const Styles = StyleSheet.create({
         borderWidth: .3,
     },
     formInput: {
-        backgroundColor: Global.color.greyInputBG,
-        color: Global.color.lightColor,
+        backgroundColor: Colors.greyInputBG,
+        color: Colors.lightColor,
         padding: 4,
         marginVertical: 7,
         borderRadius: 3
@@ -84,12 +90,12 @@ const Styles = StyleSheet.create({
         color: '#C6C6C6'
     },  
     formSubmitButton: {
-        color: Global.color.lightColor,
+        color: Colors.lightColor,
         marginVertical: 7,
         borderRadius: 3
     },
     formSubmitButtonText: {
-        color: Global.color.lightColor,
+        color: Colors.lightColor,
         padding: 8,
         fontSize: 17,
         textAlign: 'center',
@@ -99,7 +105,7 @@ const Styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-evenly',
         width:'100%',
-        backgroundColor: Global.color.darkGreyBG2,
+        backgroundColor: Colors.darkGreyBG2,
         padding: 10,
     },
     button: {
@@ -134,14 +140,14 @@ export function createTableStyles(columns = null){
             paddingHorizontal: 15,
         },
         tableHeadCell: {
-            color: Global.color.lightColor,
+            color: Colors.lightColor,
             fontSize: 18,
             fontWeight: 'bold',
             width: columnWidth,
             textAlign: 'center',
         },
         tableCell: {
-            color: Global.color.lightColor,
+            color: Colors.lightColor,
             fontSize: 16,
             width: columnWidth,
             textAlign: 'center',

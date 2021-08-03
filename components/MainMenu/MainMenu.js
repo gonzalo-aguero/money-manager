@@ -1,11 +1,11 @@
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import { Global } from '../../modules/GlobalStyles';
+import { Colors } from '../../modules/GlobalStyles';
 const MainMenu = (props)=>{
     const dataForChildren = props.dataForChildren;
     const styles = StyleSheet.create({
         menu: {
-            backgroundColor: Global.color.darkGreyBG2,
+            backgroundColor: Colors.darkGreyBG2,
             width: '100%',
             height: '7.5%',
             display: 'flex',
@@ -17,23 +17,35 @@ const MainMenu = (props)=>{
         },
         menuButton: {},
         menuButtonText: {
-            color: Global.color.lightColor,
+            color: Colors.lightColor,
             fontSize: 20,
             padding: 7.5,
             paddingHorizontal: 10,
         }
     });
+    /**
+     * 
+     * @param {String} name Name of the view (required).
+     * @param {String} text Text to display.
+     * @returns {JSX} Default button of the menu.
+     */
+    const getNavigationButton = (name = null, text = "")=>{
+        if(name === null){
+            console.error("Name is required in getNavigationButton().");
+            return;
+        }
+        return (
+            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView(name) }>
+                <Text style={styles.menuButtonText}>{text}</Text>
+            </TouchableOpacity>
+        );
+    }
     return (
         <View style={styles.menu}>
-            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView('home') }>
-                <Text style={styles.menuButtonText}>Home</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView('expenses') }>
-                <Text style={styles.menuButtonText}>Expenses</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuButton} onPress={ ()=> dataForChildren.view.setView('accounts') }>
-                <Text style={styles.menuButtonText}>Accounts</Text>
-            </TouchableOpacity>
+            {getNavigationButton("incomes", "Incomes")}
+            {getNavigationButton("home", "Home")}
+            {getNavigationButton("expenses", "Expenses")}
+            {getNavigationButton("accounts", "Accounts")}
         </View>
     );
 }

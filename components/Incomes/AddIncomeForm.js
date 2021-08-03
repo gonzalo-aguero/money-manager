@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
-import { AccountHooks, ExpenseHooks } from '../../hooks/hooks';
+import { AccountHooks, IncomeHooks } from '../../hooks/hooks';
 import { defaultSave } from '../../modules/Storage';
 import RNPickerSelect from 'react-native-picker-select';
-const AddExpenseForm = ()=>{
+const AddIncomeForm = ()=>{
     const [accounts,setAccounts] = useState([]);
     const [affectedAccountId, setAffectedAccountId] = useState("");//account id
     const [amount, setAmount] = useState("");
@@ -17,7 +17,7 @@ const AddExpenseForm = ()=>{
         const newAccountData = {
             id: affectedAccount.id,
             name: affectedAccount.name,
-            reserve: (affectedAccount.reserve - amount),
+            reserve: (Number.parseFloat(affectedAccount.reserve)  + Number.parseFloat(amount)),
             description: affectedAccount.description
         };
         //New array of accounts with the affected account (array to save).
@@ -31,11 +31,10 @@ const AddExpenseForm = ()=>{
         setAmount("");
         setSource("");
         setNote("")
-        ExpenseHooks.useGetExpenses();
+        IncomeHooks.useGetIncomes();
     }
     const getAccounts = async ()=>{
-        const gettedAccounts = await AccountHooks.useGetAccounts();
-        setAccounts(gettedAccounts);
+        setAccounts(await AccountHooks.useGetAccounts());
     }
     const accountSelector = ()=>{
         const accountsForSelect = accounts.map( account => {
@@ -62,7 +61,7 @@ const AddExpenseForm = ()=>{
     }, []);
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Add a new expense</Text>
+            <Text style={GlobalStyles.title2}>Add a new income</Text>
             {/* Account selector */}
             { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
             {/* Amount Input */}
@@ -75,7 +74,6 @@ const AddExpenseForm = ()=>{
                     if(isNaN(value)){
                         value = amount;
                     }else{
-                        // let number = Number.parseFloat(value);
                         setAmount(value);
                     }
                 }}
@@ -88,7 +86,7 @@ const AddExpenseForm = ()=>{
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Source (Example: Shopping, Friends, Food, etc)"
+                placeholder="Source (For example: Job)"
                 value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -117,7 +115,7 @@ const AddExpenseForm = ()=>{
         </View>
     );
 }
-export default AddExpenseForm;
+export default AddIncomeForm;
 const pickerSelectStyles = StyleSheet.create({
     container: {
         paddingVertical: 7.5,

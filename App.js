@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import {View, StatusBar} from 'react-native';
+import { View, StatusBar } from 'react-native';
 import MainMenu from './components/MainMenu/MainMenu';
 import Home from './views/Home';
 import Expenses from './views/Expenses';
+import Incomes from './views/Incomes';
 import Accounts from './views/Accounts';
 const App = ()=>{
     const [view, setView] = useState(0);
@@ -19,6 +20,7 @@ const App = ()=>{
     const currentView = ()=>{
         const home = <Home></Home>;
         const expenses = <Expenses></Expenses>;
+        const incomes = <Incomes></Incomes>;
         const accounts = <Accounts></Accounts>;
         let viewToDisplay = home;
         switch (view) {
@@ -27,6 +29,9 @@ const App = ()=>{
                 break;
             case 'expenses':
                 viewToDisplay = expenses;
+                break;
+            case 'incomes':
+                viewToDisplay = incomes;
                 break;
             case 'accounts':
                 viewToDisplay = accounts;
