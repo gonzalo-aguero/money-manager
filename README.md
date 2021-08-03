@@ -8,7 +8,8 @@ It's DoubleM
 * Tuesday 07-27-2021: 4 hours.
 * Wednesday 07-28-2021: 2 hours.
 * Tuesday 07-29-2021: 5 hours 30 minutes.
+### End Accounts
 ### Expenses
 * Friday 07-30-3021: 2 hours 30 minutes.
 ## Week #2
-* Monday 08-02-2021: 0 hours:*
+* Monday 08-02-2021: 2 hours 30 minutes.

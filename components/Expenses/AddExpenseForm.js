@@ -1,7 +1,10 @@
 import React, { useState, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet} from 'react-native';
 import GlobalStyles, { Global } from '../../modules/GlobalStyles';
-import { accountsDataKey, getAccounts } from '../../views/Accounts';
+
+// import { accountsDataKey, getAccounts } from '../../views/Accounts';
+import { AccountHooks } from '../../hooks/hooks';
+
 import { defaultSave } from '../../modules/Storage';
 //import DropDown, { Select, Option, OptionList } from 'react-native-selectme';
 import RNPickerSelect from 'react-native-picker-select';
@@ -10,102 +13,106 @@ const AddExpenseForm = (props)=>{
     const getExpenses = props.getExpenses;
 
     const [accounts,setAccounts] = useState([]);
-    const [accountsForSelect, setAccountsForSelect] = useState([]);
+    // const [accountsForSelect, setAccountsForSelect] = useState([]);
 
-    const [affectedAccountInputText, setAffectedAccountInputText] = useState("");
-    const [amountInputText, setAmountInputText] = useState("");
-    const [sourceInputText, setSourceInputText] = useState("");
-    const [noteInputText, setNoteInputText] = useState("");
+    // const [affectedAccountInputText, setAffectedAccountInputText] = useState("");
+    // const [amountInputText, setAmountInputText] = useState("");
+    // const [noteInputText, setNoteInputText] = useState("");
 
-    const [affectedAccount, setAffectedAccount] = useState("");
+    const [affectedAccount, setAffectedAccount] = useState("");//account id
     const [amount, setAmount] = useState("");
     const [source, setSource] = useState("");
     const [note, setNote] = useState("");
     const addButtonHandler = async ()=>{
+        //Data of the account to affect.
+        const accountData = accounts.find( account => account.id === affectedAccount);
+        //New data of the account to affect.
+        const newAccountData = {
+            id: accountData.id,
+            name: accountData.name,
+            reserve: (accountData.reserve - amount),
+            description: accountData.description
+        };
+        //New array of accounts with the affected account.
+        let newAccountsArray = accounts;
+        newAccountsArray.findIndex( account => account === accountData);
+        console.log(newAccountData);
         // await defaultSave(currentAccounts, dataKey);
         Alert.alert("Success!");
-        setAffectedAccountInputText("");
-        setAmountInputText("");
-        setSourceInputText("");
-        setNoteInputText("")
+        setAmount("");
+        setSource("");
+        setNote("")
         getExpenses();
     }
-    useEffect(()=>{
-        getAccounts(setAccounts);
-        setAccountsForSelect(accounts.map( account => {
+    const getAccounts = async ()=>{
+        const gettedAccounts = await AccountHooks.useGetAccounts();
+        setAccounts(gettedAccounts);
+    }
+    const accountSelector = ()=>{
+        const accountsForSelect = accounts.map( account => {
             return {label: account.name, value: account.id};
-        }));
-        console.log(accountsForSelect);
-        
-    });
+        }); 
+        return(
+            <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
+                <RNPickerSelect
+                    items={accountsForSelect}
+                    style={pickerSelectStyles}
+                    onValueChange={ value => {
+                        setAffectedAccount(value);
+                    }}
+                    placeholder={{
+                        label: 'Select the account to affect',
+                        value: null
+                    }}
+                />
+            </View>
+        );
+    }
+    useEffect(()=>{
+        getAccounts();
+    }, []);
     return (
         <View style={GlobalStyles.form}>
             <Text style={GlobalStyles.title2}>Add a new expense</Text>
-            {/*<TextInput 
-                style={GlobalStyles.formInput}
-                placeholder="Affected acount"
-                value={affectedAccountInputText}
-                placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
-                onChangeText={ value => {
-                    // setAffectedAccount(value);
-                    setAffectedAccountInputText(value);
-                }}
-            />*/}
-            {/*<Select>
-                <Option>Hola</Option>
-            </Select>*/}
-            <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
-                { accountsForSelect.length < 1 ? null : 
-                    <RNPickerSelect
-                        items={accountsForSelect}
-                        style={pickerSelectStyles}
-                        onValueChange={ value => {
-                            console.log("Selected value: \""+value+"\"");
-                            setAffectedAccountInputText(value);
-                        }}
-                        placeholder={{
-                            label: 'Select the account to affect',
-                            value: null
-                        }}
-                    />
-                }
-            </View>
+            {/* Account selector */}
+            { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Amount (Example: 17489.99)"
-                value={amountInputText}
+                value={amount}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
                     if(isNaN(value)){
                         value = 0;
                     }else{
-                        // setAmount(value);
-                        setAmountInputText(value);
+                        setAmount(value);
                     }
                 }}
             />
+            {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Source (Example: Shopping, Friends, Food, etc)"
-                value={sourceInputText}
+                value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
-                    // setSource(value);
-                    setSourceInputText(value);
+                    setSource(value);
                 }}
             />
+            {/* Note input */}
             <TextInput 
                 style={GlobalStyles.formInput}
                 placeholder="Note"
-                value={noteInputText}
+                value={note}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
                 maxLength={500}
                 onChangeText={ value => {
-                    // setNote(value);
-                    setNoteInputText(value);
+                    setNote(value);
                 }}
             />
+            {/* Submit button */}
             <TouchableOpacity
                 onPress={ addButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}

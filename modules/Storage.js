@@ -42,6 +42,6 @@ export async function defaultGet(key = null) {
             return result;
         }
     });
-    result = JSON.parse(result);
+    result = await JSON.parse(result);
     return result;
 }
