@@ -34,8 +34,8 @@ const Expenses = ()=>{
                 renderItem={({ item }) => (
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedExpense === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectExpense(item.id) }>
-                        <Text style={tableStyles.tableCell}>{item.account}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{printAmount(item.amount)}</Text>
+                        <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
+                        <Text style={[tableStyles.tableCell,GlobalStyles.badText]}>{"- " + printAmount(item.amount)}</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
@@ -53,15 +53,19 @@ const Expenses = ()=>{
                     <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addExpenseForm ? "Add expense" : "Hide form" }</Text>
                 </TouchableOpacity>
                 {/* Edit expense button */}
-                <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={ ()=> !editExpenseForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
+                {/* <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={ ()=> !editExpenseForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
                     <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedExpense ? GlobalStyles.disableButton : null)]}>{ !editExpenseForm ? "Edit expense" : "Hide form" }</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
                 {/* { editExpenseForm ? <EditExpenseForm selectedAccountId={selectedExpense} displayEditAccountForm={displayEditAccountForm} /> : null } */}
                 { editExpenseForm ? Alert.alert("I'm sorry :(", "This function continuous in development.") : null }
-                { addExpenseForm ? <AddExpenseForm /> : null }
+                { addExpenseForm ? <AddExpenseForm getExpenses={getExpenses} /> : null }
+                <View style={{padding: 10}}>
+                    <Text style={GlobalStyles.title2}>Total expenses</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + printAmount(ExpenseHooks.useGetTotalExpenses(expenses))}</Text>
+                </View>
             </ScrollView>
         </View>
     );

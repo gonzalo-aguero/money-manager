@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StatusBar, Alert } from 'react-native';
 import MainMenu from './components/MainMenu/MainMenu';
 import Home from './views/Home';
@@ -6,8 +6,10 @@ import Expenses from './views/Expenses';
 import Incomes from './views/Incomes';
 import Accounts from './views/Accounts';
 import Logs from './views/Logs';
+import * as Font from "expo-font";
 const App = ()=>{
-    const [view, setView] = useState(0);
+    const [view, setView] = useState("home");
+    const [fontsLoaded, setFontsLoaded] = useState(false);
     const setViewForChildren = (view)=>{
         setView(view);
         console.log(`Current view: [${view}]`);
@@ -48,6 +50,15 @@ const App = ()=>{
         }
         return viewToDisplay;
     }
+    useEffect(()=>{
+        if(!fontsLoaded){
+            Font.loadAsync({
+                'Quicksand-Light': require("./assets/fonts/Quicksand/static/Quicksand-Light.ttf"),
+                'Quicksand-Medium': require("./assets/fonts/Quicksand/static/Quicksand-Medium.ttf"),
+                'Quicksand-Bold': require("./assets/fonts/Quicksand/static/Quicksand-Bold.ttf")
+            });
+        }
+    },[]);
     return (
         <View style={{backgroundColor: 'white'}}>
             <StatusBar barStyle="default"></StatusBar>

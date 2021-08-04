@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
-import { AccountHooks, ExpenseHooks } from '../../hooks/hooks';
+import { AccountHooks, LogHooks } from '../../hooks/hooks';
 import { defaultSave } from '../../modules/Storage';
 import RNPickerSelect from 'react-native-picker-select';
-const AddExpenseForm = ()=>{
+const AddExpenseForm = (props)=>{
+    const getExpenses = props.getExpenses;//Method.
     const [accounts,setAccounts] = useState([]);
     const [affectedAccountId, setAffectedAccountId] = useState("");//account id
     const [amount, setAmount] = useState("");
@@ -28,14 +29,20 @@ const AddExpenseForm = ()=>{
             newAccountsArray[index] = newAccountData;
         }
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
+        await LogHooks.useCreateLog({
+            affectedAccount: affectedAccount.name,
+            type: LogHooks.useLogTypes.expense,
+            amount: amount,
+            source: source,
+            note: note
+        });
+        getExpenses();
         setAmount("");
         setSource("");
         setNote("")
-        ExpenseHooks.useGetExpenses();
     }
     const getAccounts = async ()=>{
-        const gettedAccounts = await AccountHooks.useGetAccounts();
-        setAccounts(gettedAccounts);
+        setAccounts(await AccountHooks.useGetAccounts());
     }
     const accountSelector = ()=>{
         const accountsForSelect = accounts.map( account => {
@@ -75,7 +82,6 @@ const AddExpenseForm = ()=>{
                     if(isNaN(value)){
                         value = amount;
                     }else{
-                        // let number = Number.parseFloat(value);
                         setAmount(value);
                     }
                 }}

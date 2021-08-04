@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
 import { defaultSave } from '../../modules/Storage';
-import { AccountHooks } from '../../hooks/hooks';
+import { AccountHooks, useCalculateId } from '../../hooks/hooks';
 const CreateAccountForm = (props)=>{
     let currentAccounts = props.accounts;//Array[]
     const getAccounts = props.getAccounts;//Method()
@@ -18,16 +18,10 @@ const CreateAccountForm = (props)=>{
         }
 
         // Calculate the new ID.
-        let newId = currentAccounts !== null ? (currentAccounts.length + 1) : 1;
-        let index = currentAccounts.findIndex( account => account.id === newId);
-        console.log("New ID:",newId);
-        if(index !== -1){
-            newId = 0;
-            do {
-                newId++;
-                index = currentAccounts.findIndex( account => account.id === newId);
-                console.log("New ID reiterada:",newId);
-            } while (index !== -1); 
+        const newId = useCalculateId(currentAccounts);
+        if(newId === false){
+            Alert.alert("Oh no!","An error has ocurred!");
+            return;
         }
         
         currentAccounts.push({

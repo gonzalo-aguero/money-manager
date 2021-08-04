@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import { Colors } from '../../modules/GlobalStyles';
+import { Colors, Fonts } from '../../modules/GlobalStyles';
 const MainMenu = (props)=>{
     const dataForChildren = props.dataForChildren;
     const styles = StyleSheet.create({
@@ -17,6 +17,7 @@ const MainMenu = (props)=>{
         },
         menuButton: {},
         menuButtonText: {
+            fontFamily: Fonts.font3,
             color: Colors.lightColor,
             fontSize: 20,
             padding: 7.5,

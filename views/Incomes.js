@@ -33,8 +33,8 @@ const Incomes = ()=>{
                 renderItem={({ item }) => (
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedIncome === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectIncome(item.id) }>
-                        <Text style={tableStyles.tableCell}>{item.account}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{printAmount(item.amount)}</Text>
+                        <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
+                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + printAmount(item.amount)}</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
@@ -52,27 +52,21 @@ const Incomes = ()=>{
                     <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addIncomeForm ? "Add income" : "Hide form" }</Text>
                 </TouchableOpacity>
                 {/* Edit expense button */}
-                <TouchableOpacity disabled={!selectedIncome ? true : false} onPress={ ()=> !editIncomeForm ? displayEditIncomeForm(true) : displayEditIncomeForm(false) }>
+                {/* <TouchableOpacity disabled={!selectedIncome ? true : false} onPress={ ()=> !editIncomeForm ? displayEditIncomeForm(true) : displayEditIncomeForm(false) }>
                     <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedIncome ? GlobalStyles.disableButton : null)]}>{ !editIncomeForm ? "Edit income" : "Hide form" }</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
                 {/* { editIncomeForm ? <EditIncomeForm selectedAccountId={selectedIncome} displayEditIncomeForm={displayEditIncomeForm} /> : null } */}
                 { editIncomeForm ? Alert.alert("I'm sorry :(", "This function continuous in development.") : null }
-                { addIncomeForm ? <AddIncomeForm /> : null }
+                { addIncomeForm ? <AddIncomeForm getIncomes={getIncomes} /> : null }
+                <View style={{padding: 10}}>
+                    <Text style={GlobalStyles.title2}>Total incomes</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + printAmount(IncomeHooks.useGetTotalIncomes(incomes))}</Text>
+                </View>
             </ScrollView>
         </View>
     );
 }
 export default Incomes;
-// Income structure
-// const incomeTemplate = {
-//     id: 1,
-//     affectedAccount: "National Bank",
-//     type: "income",
-//     amount: 12500,
-//     date: Date(),
-//     source: "Job",
-//     note: "Without notes"
-// }

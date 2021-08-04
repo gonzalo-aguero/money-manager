@@ -18,4 +18,5 @@ It's DoubleM
 * Tuesday 08-03-2021: 6 hours.
 ### End Incomes
 ### Logs
-* Wednesday 08-03-2021: 2 hours.*
+* Wednesday 08-03-2021: 8 hours 30 minutes.
+### End Logs

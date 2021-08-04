@@ -2,12 +2,24 @@ import {StyleSheet} from 'react-native';
 export const Colors = {
     darkGreyBG: "#151313",
     darkGreyBG2: "#2B2B2A",
+    darkGreyBG3: "#1E1E1C",
     greyInputBG: "#5A5A5A",
     lightBlue: "#4DC1A7",
+    lightBlue2: "#3FECC9",
     goodGreen: "#5AC61E",
+    warning: "#CDD21B",
+    badOrError: "#C61E1E",
     goodGreenBG: "#13AA13",
+    warningBG: "yellow",
+    badBG: "red",
     lightColor: "white",
 };
+export const Fonts = {
+    defaultFont: "normal",
+    font1: "Quicksand-Light",
+    font3: "Quicksand-Medium",
+    font5: "Quicksand-Bold",
+}
 const Styles = StyleSheet.create({
     mainContainer: {
         display: 'flex',
@@ -21,7 +33,12 @@ const Styles = StyleSheet.create({
         width: '100%',
         marginBottom: '15%',
     },
+    block: {
+        backgroundColor: Colors.darkGreyBG3,
+        marginTop: 30,
+    },
     title: {
+        fontFamily: Fonts.font3,
         fontSize: 30,
         marginTop: 5,
         marginBottom: 5,
@@ -32,43 +49,50 @@ const Styles = StyleSheet.create({
         color: Colors.lightColor
     },
     title2: {
+        fontFamily: Fonts.font3,
         fontSize: 26,
         marginBottom: 5,
         textAlign: 'center',
         color: Colors.lightColor
     },
     title3: {
+        fontFamily: Fonts.font3,
         fontSize: 24,
         marginBottom: 5,
         color: Colors.lightColor
     },
     text: {
+        fontFamily: Fonts.font1,
         color: Colors.lightColor,
         fontSize: 16
     },
     text2: {
+        fontFamily: Fonts.font1,
         color: Colors.lightColor,
         fontSize: 18
+    },
+    amount: {
+        fontFamily: Fonts.font1
     },
     goodText: {
         color: Colors.goodGreen
     },
     warningText: {
-        color: '#CDD21B',
+        color: Colors.warning,
     },
     badText: {
-        color: '#C61E1E',
+        color: Colors.badOrError,
     },
     goodBG: {
         backgroundColor: Colors.goodGreenBG,
         color: Colors.lightColor,
     },
     warningBG: {
-        backgroundColor: 'yellow',
+        backgroundColor: Colors.warningBG,
         color: Colors.lightColor,
     },
     badBG: {
-        backgroundColor: 'red',
+        backgroundColor: Colors.badBG,
         color: Colors.lightColor,
     },
     form: {
@@ -140,13 +164,14 @@ export function createTableStyles(columns = null){
             paddingHorizontal: 15,
         },
         tableHeadCell: {
+            fontFamily: Fonts.font5,
             color: Colors.lightColor,
             fontSize: 18,
-            fontWeight: 'bold',
             width: columnWidth,
             textAlign: 'center',
         },
         tableCell: {
+            fontFamily: Fonts.font1,
             color: Colors.lightColor,
             fontSize: 16,
             width: columnWidth,

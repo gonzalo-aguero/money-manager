@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert, Button} from 'react-native';
-import AddIncomeForm from '../components/Incomes/AddIncomeForm';
+import {View, Text, FlatList,TouchableOpacity, ScrollView} from 'react-native';
 import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
 import { printAmount } from '../modules/Number';
-import { LogHooks, useDate, useCalculateId } from '../hooks/hooks';
+import { LogHooks, IncomeHooks, TransferHooks, ExpenseHooks } from '../hooks/hooks';
 const Logs = ()=>{
     const tableStyles = createTableStyles(3);
     const [logs, setLogs] = useState([]);
     const [selectedLog, selectLog] = useState(false);
+    const [totalIncomes, setTotalIncomes] = useState(0);
+    const [totalTransfers, setTotalTransfers] = useState(0);
+    const [totalExpenses, setTotalExpenses] = useState(0);
     const getLogs = async ()=>{
-        setLogs(await LogHooks.useGetLogs());
+        const result = await LogHooks.useGetLogs();
+        setLogs(result);
+        const filteredLogs = await LogHooks.useGetFilteredLogs(result);
+        setTotalIncomes(IncomeHooks.useGetTotalIncomes(filteredLogs.incomes));
+        setTotalTransfers(TransferHooks.useGetTotalTransfers(filteredLogs.transfers));
+        setTotalExpenses(ExpenseHooks.useGetTotalExpenses(filteredLogs.expenses));
     }
     const deleteLog = async ()=>{
-        console.log("Deleted :(");
-    }
-    const createLog = async ()=>{
-        const testLog = {
-            affectedAccount: "National Bank",
-            type: logType.expense,
-            amount: 450,
-            source: "Job",
-            note: "Without notes"
-        }
-        await LogHooks.useCreateLog(testLog);
-        await getLogs();
+        if(selectedLog === false)
+            return;
+        await LogHooks.useDeleteLog(selectedLog, (result)=>{
+            if(result === true){
+                selectLog(false);
+            }
+            getLogs();
+        });
     }
     useEffect(() => {
         getLogs();
     }, []);
     return (
         <View style={GlobalStyles.mainContainer}>
-            <Text style={GlobalStyles.title}>Logs</Text>
+            <Text style={GlobalStyles.title}>Logs ({logs.length})</Text>
             <FlatList 
                 data={logs}
                 style={tableStyles.table}
@@ -42,14 +45,29 @@ const Logs = ()=>{
                         <Text style={tableStyles.tableHeadCell}>Date</Text>
                     </View>
                 )}
-                renderItem={({ item }) => (
-                    // List item
-                    <TouchableOpacity style={[tableStyles.tableRow, (selectedLog === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectLog(item.id) }>
-                        <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{printAmount(item.amount)}</Text>
-                        <Text style={tableStyles.tableCell}>{item.date}</Text>
-                    </TouchableOpacity>
-                )}
+                renderItem={({ item }) => {
+                    const itemStyle = LogHooks.useGetLogStyle(item.type);
+                    let sign = "";
+                    switch (item.type) {
+                        case LogHooks.useLogTypes.income:
+                            sign = '+ ';
+                            break;
+                        case LogHooks.useLogTypes.expense:
+                            sign = '- ';
+                            break;
+                        case LogHooks.useLogTypes.transfer:
+                            sign = '<- ';
+                            break;
+                    }
+                    return (
+                        // List item
+                        <TouchableOpacity style={[tableStyles.tableRow, (selectedLog === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectLog(item.id) }>
+                            <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
+                            <Text style={[tableStyles.tableCell, itemStyle.amount]}>{sign + printAmount(item.amount)}</Text>
+                            <Text style={tableStyles.tableCell}>{item.date}</Text>
+                        </TouchableOpacity>
+                    )
+                }}
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
@@ -63,8 +81,21 @@ const Logs = ()=>{
                 <TouchableOpacity disabled={!selectedLog ? true : false} onPress={deleteLog}>
                     <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedLog ? GlobalStyles.disableButton : null)]}>Delete</Text>
                 </TouchableOpacity>
-                <Button onPress={createLog} title={"Create log"}></Button>
             </View>
+            <ScrollView style={GlobalStyles.mainScrollView}>
+                <View style={[GlobalStyles.block, {padding: 10}]}>
+                    <Text style={GlobalStyles.title2}>Total incomes</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + printAmount(totalIncomes)}</Text>
+                </View>
+                <View style={[GlobalStyles.block, {padding: 10}]}>
+                    <Text style={GlobalStyles.title2}>Total transfers amount</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount,{color: Colors.lightBlue2}]}>{"<- " + printAmount(totalTransfers)}</Text>
+                </View>
+                <View style={[GlobalStyles.block, {padding: 10}]}>
+                    <Text style={GlobalStyles.title2}>Total expenses</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + printAmount(totalExpenses)}</Text>
+                </View>
+            </ScrollView>
         </View>
     );
 }

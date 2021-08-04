@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
-import { AccountHooks, IncomeHooks } from '../../hooks/hooks';
+import { AccountHooks, LogHooks } from '../../hooks/hooks';
 import { defaultSave } from '../../modules/Storage';
 import RNPickerSelect from 'react-native-picker-select';
-const AddIncomeForm = ()=>{
+const AddIncomeForm = (props)=>{
+    const getIncomes = props.getIncomes;//Method.
     const [accounts,setAccounts] = useState([]);
     const [affectedAccountId, setAffectedAccountId] = useState("");//account id
     const [amount, setAmount] = useState("");
@@ -28,10 +29,17 @@ const AddIncomeForm = ()=>{
             newAccountsArray[index] = newAccountData;
         }
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
+        await LogHooks.useCreateLog({
+            affectedAccount: affectedAccount.name,
+            type: LogHooks.useLogTypes.income,
+            amount: amount,
+            source: source,
+            note: note
+        });
+        getIncomes();
         setAmount("");
         setSource("");
         setNote("")
-        IncomeHooks.useGetIncomes();
     }
     const getAccounts = async ()=>{
         setAccounts(await AccountHooks.useGetAccounts());
