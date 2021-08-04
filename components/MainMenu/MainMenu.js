@@ -42,6 +42,7 @@ const MainMenu = (props)=>{
     }
     return (
         <View style={styles.menu}>
+            {getNavigationButton("logs", "Logs")}
             {getNavigationButton("incomes", "Incomes")}
             {getNavigationButton("home", "Home")}
             {getNavigationButton("expenses", "Expenses")}

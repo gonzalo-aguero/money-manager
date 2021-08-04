@@ -67,13 +67,3 @@ const Expenses = ()=>{
     );
 }
 export default Expenses;
-// Expense structure
-// const expenseTemplate = {
-//     id: 1,
-//     affectedAccount: "National Bank",
-//     type: "expense",
-//     amount: 12500,
-//     date: Date(),
-//     source: "Shopping",
-//     note: "Without notes"
-// }

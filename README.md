@@ -1,7 +1,7 @@
 # DoubleM
 It's DoubleM
 
-====== 
+============================================== 
 ## Week #1
 ### Accounts
 * Monday 07-26-2021: 6 hours 30 minutes.
@@ -15,5 +15,7 @@ It's DoubleM
 * Monday 08-02-2021: 2 hours 30 minutes.
 ### End Expenses
 ### Incomes
-* Tuesday 08-03-2021: 5 hours.
+* Tuesday 08-03-2021: 6 hours.
 ### End Incomes
+### Logs
+* Wednesday 08-03-2021: 2 hours.*
