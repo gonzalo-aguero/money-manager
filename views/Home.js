@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import GlobalStyles, { createTableStyles, Colors } from '../modules/GlobalStyles';
 import { printAmount } from '../modules/Number';
-import { AccountHooks, ExpenseHooks, IncomeHooks, TransferHooks } from '../hooks/hooks';
+import { AccountHooks, LogHooks, ExpenseHooks, IncomeHooks, TransferHooks } from '../hooks/hooks';
 const Home = (props)=>{
     const dataForChildren = props.dataForChildren;
     const tableStyles = createTableStyles(2, 125);
     const logsTableStyles = createTableStyles(3, 100);
     const [totalReserve, setTotalReserve] = useState(0);
     const [accounts, setAccounts] = useState([]);
+    const [logs, setLogs] = useState([]);
     const [last5Expenses, setLast5Expenses] = useState([]);
     const [last5Incomes, setLast5Incomes] = useState([]);
     const [last5Transfers, setLast5Transfers] = useState([]);
@@ -17,10 +18,14 @@ const Home = (props)=>{
         setAccounts(result);
         setTotalReserve(await AccountHooks.useGetTotalReserve(result));
     }
+    const getLogs = async ()=>{
+        const result = await LogHooks.useGetLogs();
+        setLogs(result);
+    }
     const getLast5Expenses = async ()=>{
         let numberOfLogsToDisplay = 5;
         let last5Expenses = []
-        const result = await ExpenseHooks.useGetExpenses();
+        const result = await ExpenseHooks.useGetExpenses(logs);
         if(result.length < 5){
             numberOfLogsToDisplay = result.length;
         } 
@@ -32,7 +37,7 @@ const Home = (props)=>{
     const getLast5Incomes = async ()=>{
         let numberOfLogsToDisplay = 5;
         let last5Incomes = []
-        const result = await IncomeHooks.useGetIncomes();
+        const result = await IncomeHooks.useGetIncomes(logs);
         if(result.length < 5){
             numberOfLogsToDisplay = result.length;
         } 
@@ -44,7 +49,7 @@ const Home = (props)=>{
     const getLast5Transfers = async ()=>{
         let numberOfLogsToDisplay = 5;
         let last5Transfers = []
-        const result = await TransferHooks.useGetTransfers();
+        const result = await TransferHooks.useGetTransfers(logs);
         if(result.length < 5){
             numberOfLogsToDisplay = result.length;
         } 
@@ -55,6 +60,7 @@ const Home = (props)=>{
     }
     useEffect(()=>{
         getAccounts();
+        getLogs();
         getLast5Expenses();
         getLast5Incomes();
         getLast5Transfers();
