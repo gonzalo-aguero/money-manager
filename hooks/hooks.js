@@ -13,6 +13,14 @@ export const AccountHooks = {
         }else{
             return result;
         }
+    },
+    useGetTotalReserve: async (accounts = null)=>{
+        if(accounts === null){
+            accounts = await AccountHooks.useGetAccounts();
+        }
+        let totalReserve = 0;
+        accounts.forEach( account => totalReserve += account.reserve );
+        return totalReserve;
     }
 }
 export const ExpenseHooks = {

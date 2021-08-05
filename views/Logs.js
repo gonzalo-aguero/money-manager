@@ -33,7 +33,7 @@ const Logs = ()=>{
     }, []);
     return (
         <View style={GlobalStyles.mainContainer}>
-            <Text style={GlobalStyles.title}>Logs ({logs.length})</Text>
+            <Text style={GlobalStyles.title}>Movements ({logs.length})</Text>
             <FlatList 
                 data={logs}
                 style={tableStyles.table}

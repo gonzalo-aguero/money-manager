@@ -21,6 +21,12 @@ export const Fonts = {
     font5: "Quicksand-Bold",
 }
 const Styles = StyleSheet.create({
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+    },
     mainContainer: {
         display: 'flex',
         justifyContent: 'flex-start',
@@ -36,6 +42,9 @@ const Styles = StyleSheet.create({
     block: {
         backgroundColor: Colors.darkGreyBG3,
         marginTop: 30,
+    },
+    block2: {
+        backgroundColor: Colors.darkGreyBG3,
     },
     title: {
         fontFamily: Fonts.font3,
@@ -142,7 +151,7 @@ const Styles = StyleSheet.create({
     }
 });
 export default Styles;
-export function createTableStyles(columns = null){
+export function createTableStyles(columns = null, height = '25%'){
     let columnWidth;
     if(columns !== null){
         columnWidth = (100 / columns) + '%';
@@ -152,8 +161,8 @@ export function createTableStyles(columns = null){
     const tableStyles = StyleSheet.create({
         table: {
             width: '100%',
-            height: '25%',
-            maxHeight: '25%',
+            height: height,
+            maxHeight: height,
         },
         tableRow: {
             display: 'flex',
