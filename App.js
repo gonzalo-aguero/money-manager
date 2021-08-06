@@ -6,6 +6,7 @@ import Home from './views/Home';
 import Expenses from './views/Expenses';
 import Incomes from './views/Incomes';
 import Accounts from './views/Accounts';
+import Transfers from './views/Transfers';
 import Logs from './views/Logs';
 import About from './views/About';
 const App = ()=>{
@@ -25,7 +26,8 @@ const App = ()=>{
         const home = <Home dataForChildren={dataForChildren}></Home>;
         const expenses = <Expenses></Expenses>;
         const incomes = <Incomes></Incomes>;
-        const accounts = <Accounts></Accounts>;
+        const accounts = <Accounts  dataForChildren={dataForChildren}></Accounts>;
+        const transfers = <Transfers dataForChildren={dataForChildren}></Transfers>;
         const logs = <Logs></Logs>;
         const about = <About dataForChildren={dataForChildren}></About>
         let viewToDisplay = home;
@@ -41,6 +43,9 @@ const App = ()=>{
                 break;
             case 'accounts':
                 viewToDisplay = accounts;
+                break;
+            case 'transfers':
+                viewToDisplay = transfers;
                 break;
             case 'logs':
                 viewToDisplay = logs;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
-import GlobalStyles from '../../modules/GlobalStyles';
-import { AccountHooks, LogHooks } from '../../hooks/hooks';
+import GlobalStyles, { pickerSelectStyles } from '../../modules/GlobalStyles';
+import { AccountHooks } from '../../hooks/hooks';
+import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
 import RNPickerSelect from 'react-native-picker-select';
 const AddIncomeForm = (props)=>{
@@ -29,9 +30,9 @@ const AddIncomeForm = (props)=>{
             newAccountsArray[index] = newAccountData;
         }
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
-        await LogHooks.useCreateLog({
+        await useCreateLog({
             affectedAccount: affectedAccount.name,
-            type: LogHooks.useLogTypes.income,
+            type: useLogTypes.income,
             amount: amount,
             source: source,
             note: note
@@ -124,21 +125,3 @@ const AddIncomeForm = (props)=>{
     );
 }
 export default AddIncomeForm;
-const pickerSelectStyles = StyleSheet.create({
-    container: {
-        paddingVertical: 7.5,
-        paddingHorizontal: 0,
-    },
-    inputIOS: {
-        backgroundColor: 'red',
-        borderWidth: 0.5,
-        borderColor: 'white',
-        color: 'white',
-    },
-    inputAndroid: {
-        backgroundColor: 'red',
-        borderWidth: 0.5,
-        borderColor: 'white',
-        color: 'white',
-    },
-});

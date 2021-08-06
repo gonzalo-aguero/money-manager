@@ -144,7 +144,8 @@ const Styles = StyleSheet.create({
     button: {
         fontSize: 16,
         padding: 7,
-        borderRadius: 3
+        borderRadius: 3,
+        textAlign:'center',
     },
     disableButton: {
         opacity: 0.5,
@@ -192,3 +193,21 @@ export function createTableStyles(columns = null, height = '25%'){
     });
     return tableStyles;
 }
+export const pickerSelectStyles = StyleSheet.create({
+    container: {
+        paddingVertical: 7.5,
+        paddingHorizontal: 0,
+    },
+    inputIOS: {
+        backgroundColor: 'red',
+        borderWidth: 0.5,
+        borderColor: 'white',
+        color: 'white',
+    },
+    inputAndroid: {
+        backgroundColor: 'red',
+        borderWidth: 0.5,
+        borderColor: 'white',
+        color: 'white',
+    },
+});

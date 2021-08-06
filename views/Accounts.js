@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
+import {View, ScrollView, Text, FlatList, TouchableOpacity, Alert} from 'react-native';
 import CreateAccountForm from '../components/Accounts/CreateAccountForm';
 import EditAccountForm from '../components/Accounts/EditAccountForm';
 import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
-import { printAmount } from '../modules/Number';
 import { defaultSave } from '../modules/Storage';
-import { AccountHooks } from '../hooks/hooks';
-const Accounts = ()=>{
+import { AccountHooks, usePrintAmount } from '../hooks/hooks';
+import { Icons, getViewIconImage } from '../modules/Global';
+
+const Accounts = (props)=>{
+    const dataForChildren = props.dataForChildren;
+    const currentViewName = dataForChildren.view.viewName;
     const tableStyles = createTableStyles(3);
     const [createAccountForm, displayCreateAccountForm] = useState(false);//True to display create account form.
     const [editAccountForm, displayEditAccountForm] = useState(false);//True to display edit account form.
@@ -51,7 +54,16 @@ const Accounts = ()=>{
     }, []);
     return (
         <View style={GlobalStyles.mainContainer}>
-            <Text style={GlobalStyles.title}>Accounts ({accounts !== null ? accounts.length : 0})</Text>
+            <View style={GlobalStyles.header}>
+                <Text style={GlobalStyles.title}>Accounts ({accounts !== null ? accounts.length : 0})</Text>
+                <TouchableOpacity onPress={()=> dataForChildren.view.setView("transfers")} style={{
+                    position: 'absolute',
+                    right: 15,
+                    top: 7.5,
+                }}>
+                    {getViewIconImage(Icons.transfers, currentViewName === "transfers", GlobalStyles.activeButton)}
+                </TouchableOpacity>
+            </View>
             <FlatList 
                 data={accounts}
                 style={tableStyles.table}
@@ -67,7 +79,7 @@ const Accounts = ()=>{
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedAccount === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectAccount(item.id) }>
                         <Text style={tableStyles.tableCell}>{item.name}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{printAmount(item.reserve)}</Text>
+                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{usePrintAmount(item.reserve)}</Text>
                         <Text style={tableStyles.tableCell}>{item.description}</Text>
                     </TouchableOpacity>
                 )}

@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import GlobalStyles, { pickerSelectStyles } from '../../modules/GlobalStyles';
 import { AccountHooks } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
 import RNPickerSelect from 'react-native-picker-select';
-
-const AddExpenseForm = (props)=>{
-    const getExpenses = props.getExpenses;//Method.
+const AddTransferForm = (props)=>{
+    const getTransfers = props.getTransfers;//Method.
     const [accounts,setAccounts] = useState([]);
-    const [affectedAccountId, setAffectedAccountId] = useState("");//account id
+    const [issuingAccountId, setIssuingAccountId] = useState("");
+    const [receiverAccountId, setReceiverAccountId] = useState("");
     const [amount, setAmount] = useState("");
     const [source, setSource] = useState("");
     const [note, setNote] = useState("");
     const addButtonHandler = async ()=>{
-        //Data of the account to affect.
-        const affectedAccount = accounts.find( account => account.id === affectedAccountId);
+        //Data of the isssuing account.
+        const issuingAccount = accounts.find( account => account.id === issuingAccountId);
+        //Data of the receiver account.
+        const receiverAccount = accounts.find( account => account.id === receiverAccountId);        
         //New data of the account to affect.
-        const newAccountData = {
-            id: affectedAccount.id,
-            name: affectedAccount.name,
-            reserve: (affectedAccount.reserve - amount),
-            description: affectedAccount.description
+        const newIssuingAccountData = {
+            id: issuingAccount.id,
+            name: issuingAccount.name,
+            reserve: (Number.parseFloat(issuingAccount.reserve)  + Number.parseFloat(amount)),
+            description: issuingAccount.description
         };
         //New array of accounts with the affected account (array to save).
         let newAccountsArray = accounts;
         //Get the index of the account to affect.
-        const index = newAccountsArray.findIndex( account => account === affectedAccount);
+        const index = newAccountsArray.findIndex( account => account === issuingAccount);
         if(index !== -1){
-            newAccountsArray[index] = newAccountData;
+            newAccountsArray[index] = newIssuingAccountData;
         }
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
         await useCreateLog({
-            affectedAccount: affectedAccount.name,
-            type: useLogTypes.expense,
+            affectedAccount: {
+                from: issuingAccount.name,
+                to: issuingAccount.name,
+            },
+            type: useLogTypes.income,
             amount: amount,
             source: source,
             note: note
         });
-        getExpenses();
+        getTransfers();
         setAmount("");
         setSource("");
         setNote("")
@@ -46,7 +51,7 @@ const AddExpenseForm = (props)=>{
     const getAccounts = async ()=>{
         setAccounts(await AccountHooks.useGetAccounts());
     }
-    const accountSelector = ()=>{
+    const issuingAccountSelector = ()=>{
         const accountsForSelect = accounts.map( account => {
             return {label: account.name, value: account.id};
         }); 
@@ -56,24 +61,47 @@ const AddExpenseForm = (props)=>{
                     items={accountsForSelect}
                     style={pickerSelectStyles}
                     onValueChange={ value => {
-                        setAffectedAccountId(value);
+                        setIssuingAccountId(value);
                     }}
                     placeholder={{
-                        label: 'Select the account to affect',
+                        label: 'Select the issuing account',
                         value: null
                     }}
                 />
             </View>
         );
     }
+    const receiverAccountSelector = ()=>{
+        const accountsForSelect = accounts.map( account => {
+            return {label: account.name, value: account.id};
+        }); 
+        return(
+            <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
+                <RNPickerSelect
+                    items={accountsForSelect}
+                    style={pickerSelectStyles}
+                    onValueChange={ value => {
+                        setReceiverAccountId(value);
+                    }}
+                    placeholder={{
+                        label: 'Select the receiver account',
+                        value: null
+                    }}
+                />
+            </View>
+        );
+    }
+    
     useEffect(()=>{
         getAccounts();
     }, []);
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Add a new expense</Text>
-            {/* Account selector */}
-            { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            <Text style={GlobalStyles.title2}>Add a new transfer</Text>
+            {/* Issuing account selector */}
+            { accounts.length > 0 ? issuingAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            {/* Issuing account selector */}
+            { accounts.length > 0 ? receiverAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
             {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
@@ -96,7 +124,7 @@ const AddExpenseForm = (props)=>{
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Source (Example: Shopping, Friends, Food, etc)"
+                placeholder="Source (For example: Job)"
                 value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -125,4 +153,4 @@ const AddExpenseForm = (props)=>{
         </View>
     );
 }
-export default AddExpenseForm;
+export default AddTransferForm;

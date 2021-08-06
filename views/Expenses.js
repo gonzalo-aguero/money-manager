@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
 import AddExpenseForm from '../components/Expenses/AddExpenseForm';
-//DEVELOP ---> import EditExpenseForm from '../components/Expenses/EditExpenseForm';
-import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
-import { printAmount } from '../modules/Number';
-import { ExpenseHooks } from '../hooks/hooks';
+import GlobalStyles,{ createTableStyles } from '../modules/GlobalStyles';
+import { ExpenseHooks, usePrintAmount } from '../hooks/hooks';
+import { useDisplayLogDetail, useDeleteLog } from '../hooks/LogHooks';
 const Expenses = ()=>{
     const tableStyles = createTableStyles(3);
     const [addExpenseForm, displayAddExpenseForm] = useState(false);//True to display create account form.
@@ -13,6 +12,16 @@ const Expenses = ()=>{
     const [selectedExpense, selectExpense] = useState(false);
     const getExpenses = async ()=>{
         setExpenses(await ExpenseHooks.useGetExpenses());
+    }
+    const deleteIncome = async ()=>{
+        if(selectedExpense === false)
+            return;
+        await useDeleteLog(selectedExpense, (result)=>{
+            if(result === true){
+                selectExpense(false);
+            }
+            getExpenses();
+        });
     }
     useEffect(() => {
         getExpenses();
@@ -35,7 +44,7 @@ const Expenses = ()=>{
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedExpense === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectExpense(item.id) }>
                         <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.badText]}>{"- " + printAmount(item.amount)}</Text>
+                        <Text style={[tableStyles.tableCell,GlobalStyles.badText]}>{"- " + usePrintAmount(item.amount)}</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
@@ -56,6 +65,9 @@ const Expenses = ()=>{
                 {/* <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={ ()=> !editExpenseForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
                     <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedExpense ? GlobalStyles.disableButton : null)]}>{ !editExpenseForm ? "Edit expense" : "Hide form" }</Text>
                 </TouchableOpacity> */}
+                <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={deleteIncome}>
+                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedExpense ? GlobalStyles.disableButton : null)]}>Delete</Text>
+                </TouchableOpacity>
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
@@ -64,8 +76,10 @@ const Expenses = ()=>{
                 { addExpenseForm ? <AddExpenseForm getExpenses={getExpenses} /> : null }
                 <View style={{padding: 10}}>
                     <Text style={GlobalStyles.title2}>Total expenses</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + printAmount(ExpenseHooks.useGetTotalExpenses(expenses))}</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + usePrintAmount(ExpenseHooks.useGetTotalExpenses(expenses))}</Text>
                 </View>
+                {/* Log detail */}
+                { selectedExpense !== false ? useDisplayLogDetail(selectedExpense, expenses, ()=> selectExpense(false)) : null }
             </ScrollView>
         </View>
     );

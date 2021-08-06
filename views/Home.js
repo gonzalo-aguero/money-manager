@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import GlobalStyles, { createTableStyles, Colors } from '../modules/GlobalStyles';
-import { printAmount } from '../modules/Number';
-import { AccountHooks, LogHooks, ExpenseHooks, IncomeHooks, TransferHooks } from '../hooks/hooks';
+import { AccountHooks, usePrintAmount } from '../hooks/hooks';
+import { useGetFilteredLogs } from '../hooks/LogHooks';
 const Home = (props)=>{
     const dataForChildren = props.dataForChildren;
     const tableStyles = createTableStyles(2, 125);
     const logsTableStyles = createTableStyles(3, 100);
     const [totalReserve, setTotalReserve] = useState(0);
     const [accounts, setAccounts] = useState([]);
-    const [logs, setLogs] = useState([]);
     const [last5Expenses, setLast5Expenses] = useState([]);
     const [last5Incomes, setLast5Incomes] = useState([]);
     const [last5Transfers, setLast5Transfers] = useState([]);
@@ -18,52 +17,48 @@ const Home = (props)=>{
         setAccounts(result);
         setTotalReserve(await AccountHooks.useGetTotalReserve(result));
     }
-    const getLogs = async ()=>{
-        const result = await LogHooks.useGetLogs();
-        setLogs(result);
+    const getFilteredLogs = async ()=>{
+        const logs = await useGetFilteredLogs();
+        getLast5Expenses(logs.expenses);
+        getLast5Incomes(logs.incomes);
+        getLast5Transfers(logs.transfers);
     }
-    const getLast5Expenses = async ()=>{
+    const getLast5Expenses = (filteredLogs = [])=>{
         let numberOfLogsToDisplay = 5;
         let last5Expenses = []
-        const result = await ExpenseHooks.useGetExpenses(logs);
-        if(result.length < 5){
-            numberOfLogsToDisplay = result.length;
+        if(filteredLogs.length < 5){
+            numberOfLogsToDisplay = filteredLogs.length;
         } 
-        result.forEach( (expenseLog,i) => {
+        filteredLogs.forEach( (expenseLog,i) => {
             last5Expenses[i] = expenseLog;
         });
         setLast5Expenses(last5Expenses);
     }
-    const getLast5Incomes = async ()=>{
+    const getLast5Incomes = async (filteredLogs = [])=>{
         let numberOfLogsToDisplay = 5;
         let last5Incomes = []
-        const result = await IncomeHooks.useGetIncomes(logs);
-        if(result.length < 5){
-            numberOfLogsToDisplay = result.length;
+        if(filteredLogs.length < 5){
+            numberOfLogsToDisplay = filteredLogs.length;
         } 
-        result.forEach( (incomeLog,i) => {
+        filteredLogs.forEach( (incomeLog,i) => {
             last5Incomes[i] = incomeLog;
         });
         setLast5Incomes(last5Incomes);
     }
-    const getLast5Transfers = async ()=>{
+    const getLast5Transfers = async (filteredLogs = [])=>{
         let numberOfLogsToDisplay = 5;
         let last5Transfers = []
-        const result = await TransferHooks.useGetTransfers(logs);
-        if(result.length < 5){
-            numberOfLogsToDisplay = result.length;
+        if(filteredLogs.length < 5){
+            numberOfLogsToDisplay = filteredLogs.length;
         } 
-        result.forEach( (transferLog,i) => {
+        filteredLogs.forEach( (transferLog,i) => {
             last5Transfers[i] = transferLog;
         });
         setLast5Transfers(last5Transfers);
     }
     useEffect(()=>{
         getAccounts();
-        getLogs();
-        getLast5Expenses();
-        getLast5Incomes();
-        getLast5Transfers();
+        getFilteredLogs();
     },[]);
     return (
         <View style={GlobalStyles.mainContainer}>
@@ -91,7 +86,7 @@ const Home = (props)=>{
                 borderBottomColor: Colors.darkGreyBG2
             }]}>
                 <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>Total amount</Text>
-                <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{printAmount(totalReserve)}</Text>
+                <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{usePrintAmount(totalReserve)}</Text>
                 {/* Accounts table */}
                 <FlatList 
                     data={accounts}
@@ -107,7 +102,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[tableStyles.tableRow]}>
                             <Text style={tableStyles.tableCell}>{item.name}</Text>
-                            <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{printAmount(item.reserve)}</Text>
+                            <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{usePrintAmount(item.reserve)}</Text>
                         </View>
                     )}
                     ListEmptyComponent={() => (
@@ -135,7 +130,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[logsTableStyles.tableCell,GlobalStyles.badText]}>{"- " + printAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell,GlobalStyles.badText]}>{"- " + usePrintAmount(item.amount)}</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}
@@ -164,7 +159,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[logsTableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + printAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + usePrintAmount(item.amount)}</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}
@@ -193,7 +188,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[logsTableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + printAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(item.amount)}</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}

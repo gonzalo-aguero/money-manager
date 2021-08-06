@@ -1,8 +1,5 @@
-// import { useState, useEffect } from "react";
-import { StyleSheet, Alert } from "react-native";
-import { defaultGet, defaultSave } from '../modules/Storage';
-import { Colors } from '../modules/GlobalStyles';
-
+import { defaultGet } from '../modules/Storage';
+import { useGetLogs, useLogTypes } from './LogHooks';
 
 export const AccountHooks = {
     useDataKey: "accounts",
@@ -26,9 +23,9 @@ export const AccountHooks = {
 export const ExpenseHooks = {
     useGetExpenses: async (logs = null)=>{
         if(logs === null){
-            logs = await LogHooks.useGetLogs();
+            logs = await useGetLogs();
         }
-        const expenseLogs = logs.filter( log => log.type === LogHooks.useLogTypes.expense);
+        const expenseLogs = logs.filter( log => log.type === useLogTypes.expense);
         return expenseLogs;
     },
     /**
@@ -44,9 +41,9 @@ export const ExpenseHooks = {
 export const IncomeHooks = {
     useGetIncomes: async (logs = null)=>{
         if(logs === null){
-            logs = await LogHooks.useGetLogs();
+            logs = await useGetLogs();
         }
-        const incomeLogs = logs.filter( log => log.type === LogHooks.useLogTypes.income);
+        const incomeLogs = logs.filter( log => log.type === useLogTypes.income);
         return incomeLogs;
     },
     /**
@@ -62,9 +59,9 @@ export const IncomeHooks = {
 export const TransferHooks = {
     useGetTransfers: async (logs = null)=>{
         if(logs === null){
-            logs = await LogHooks.useGetLogs();
+            logs = await useGetLogs();
         }
-        const transferLogs = logs.filter( log => log.type === LogHooks.useLogTypes.transfer);
+        const transferLogs = logs.filter( log => log.type === useLogTypes.transfer);
         return transferLogs;
     },
     /**
@@ -75,131 +72,6 @@ export const TransferHooks = {
         let total = 0;
         transfers.forEach(transfer => total += Number.parseFloat(transfer.amount));
         return total;
-    }
-}
-export const LogHooks = {
-    useDataKey: "logs",
-    useLogTypes: {
-        income: "income",
-        expense: "expense",
-        transfer: "transfer"
-    },
-    useGetLogs: async ()=>{
-        const result = await defaultGet(LogHooks.useDataKey);
-        if(result === null || result === "" || result === false){
-            return [];
-        }else{
-            return result.sort((a,b)=> b.id -a.id);            ;
-        }
-    },
-    useGetFilteredLogs: async (logs = null)=>{
-        if(logs === null){
-            logs = await LogHooks.useGetLogs();
-        }
-        return {
-            incomes: await IncomeHooks.useGetIncomes(logs),
-            transfers: await TransferHooks.useGetTransfers(logs),
-            expenses: await ExpenseHooks.useGetExpenses(logs)
-        };
-    },
-    /**
-     * Createa a log.
-     * @param {Object} logData Object with the log data.
-     * Log data example:
-     * {
-     *  affectedAccount: "National Bank",
-     *  type: "income",
-     *  amount: 12500,
-     *  source: "Job",
-     *  note: "Without notes"
-     * }
-     */
-    useCreateLog: async (logData)=>{
-        let logs = [];
-        logs = await LogHooks.useGetLogs();
-        const newId = useCalculateId(logs, false);
-        if(newId === false){
-            Alert.alert("Oh no!","An error has ocurred!");
-            return false;
-        }
-        const log = {
-            id: newId,
-            affectedAccount: logData.affectedAccount,
-            type: logData.type,
-            amount: logData.amount,
-            date: useDate(),
-            source: logData.source,
-            note: logData.note
-        }
-        logs.push(log);
-        await defaultSave(logs, LogHooks.useDataKey);
-    },
-    /**
-     * @param {Number} logId 
-     * @param {Function} callback (optional) It receives as parameter: True if everything is ok, otherwise it is false. 
-     */
-    useDeleteLog: async (logId = null, callback = ()=>{})=>{
-        if(logId === null){
-            console.error("logId is required in useDeleteLog().");
-            callback(false);
-            return;
-        }
-        let logs = [];
-        logs = await LogHooks.useGetLogs();
-        // Get the log ID. Then remove it from logs array.
-        const logIndex = logs.findIndex( log => log.id === logId);
-        Alert.alert(
-            "Are your sure?",
-            "Are you sure you want to remove this log?",
-            [
-                // The "Yes" button
-                {
-                    text: "Yes",
-                    onPress: async () => {
-                        logs.splice(logIndex,1);
-                        await defaultSave(logs, LogHooks.useDataKey);
-                        callback(true);
-                    },
-                },
-                // The "No" button
-                // Does nothing but dismiss the dialog when tapped
-                {
-                    text: "No",
-                    onPress: async ()=>{
-                        callback(false);
-                    }
-                },
-            ]
-        );
-    },
-    useGetLogStyle: (logType = null)=>{
-        if(logType === null){
-            console.error("logType is required in useGetLogStyle().");
-            return false;
-        }
-        let style = StyleSheet.create({
-            accountName: {},
-            amount: {},
-            date: {}
-        });
-        switch (logType) {
-            case LogHooks.useLogTypes.income:
-                style.amount = {
-                    color: Colors.goodGreen
-                }
-                break;
-            case LogHooks.useLogTypes.expense:
-                style.amount = {
-                    color: Colors.badOrError
-                }
-                break;
-            case LogHooks.useLogTypes.transfer:
-                style.amount = {
-                    color: Colors.lightBlue2
-                }
-                break;
-        }
-        return style;
     }
 }
 /**
@@ -232,11 +104,23 @@ export const useCalculateId = (objectArray = false, resetTo0 = true)=>{
     let newId = objectArray !== null ? (objectArray.length + 1) : 1;
     let index = objectArray.findIndex( object => object.id === newId);
     if(index !== -1){
-        resetTo0 ? newId = 0 : newId;
+        if(resetTo0 === true){
+            newId = 0;
+        }
         do {
             newId++;
             index = objectArray.findIndex( object => object.id === newId);
         } while (index !== -1); 
     }
     return newId;
+}
+/**
+ * This function replaces to printAmount() in ../modules/Number.js
+ * Return the amount in default format.
+ * @param {Number} amount Amount to display.
+ * @returns Amount to display.
+ */
+export function usePrintAmount(amount = 0){
+    amount = Number.parseFloat(amount);
+    return '$' + amount.toFixed(2);
 }

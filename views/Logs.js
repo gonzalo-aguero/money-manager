@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList,TouchableOpacity, ScrollView} from 'react-native';
 import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
-import { printAmount } from '../modules/Number';
-import { LogHooks, IncomeHooks, TransferHooks, ExpenseHooks } from '../hooks/hooks';
+import { 
+    useGetLogs,
+    useGetFilteredLogs,
+    useDeleteLog,
+    useGetLogStyle,
+    useLogTypes,
+    useDisplayLogDetail
+} from '../hooks/LogHooks';
+import { IncomeHooks, TransferHooks, ExpenseHooks, usePrintAmount } from '../hooks/hooks';
 const Logs = ()=>{
-    const tableStyles = createTableStyles(3);
+    const tableStyles = createTableStyles(3, 150);
     const [logs, setLogs] = useState([]);
     const [selectedLog, selectLog] = useState(false);
     const [totalIncomes, setTotalIncomes] = useState(0);
     const [totalTransfers, setTotalTransfers] = useState(0);
     const [totalExpenses, setTotalExpenses] = useState(0);
     const getLogs = async ()=>{
-        const result = await LogHooks.useGetLogs();
+        const result = await useGetLogs();
         setLogs(result);
-        const filteredLogs = await LogHooks.useGetFilteredLogs(result);
+        const filteredLogs = await useGetFilteredLogs(result);
         setTotalIncomes(IncomeHooks.useGetTotalIncomes(filteredLogs.incomes));
         setTotalTransfers(TransferHooks.useGetTotalTransfers(filteredLogs.transfers));
         setTotalExpenses(ExpenseHooks.useGetTotalExpenses(filteredLogs.expenses));
@@ -21,7 +28,7 @@ const Logs = ()=>{
     const deleteLog = async ()=>{
         if(selectedLog === false)
             return;
-        await LogHooks.useDeleteLog(selectedLog, (result)=>{
+        await useDeleteLog(selectedLog, (result)=>{
             if(result === true){
                 selectLog(false);
             }
@@ -46,16 +53,16 @@ const Logs = ()=>{
                     </View>
                 )}
                 renderItem={({ item }) => {
-                    const itemStyle = LogHooks.useGetLogStyle(item.type);
+                    const itemStyle = useGetLogStyle(item.type);
                     let sign = "";
                     switch (item.type) {
-                        case LogHooks.useLogTypes.income:
+                        case useLogTypes.income:
                             sign = '+ ';
                             break;
-                        case LogHooks.useLogTypes.expense:
+                        case useLogTypes.expense:
                             sign = '- ';
                             break;
-                        case LogHooks.useLogTypes.transfer:
+                        case useLogTypes.transfer:
                             sign = '<- ';
                             break;
                     }
@@ -63,7 +70,7 @@ const Logs = ()=>{
                         // List item
                         <TouchableOpacity style={[tableStyles.tableRow, (selectedLog === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectLog(item.id) }>
                             <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[tableStyles.tableCell, itemStyle.amount]}>{sign + printAmount(item.amount)}</Text>
+                            <Text style={[tableStyles.tableCell, itemStyle.amount]}>{sign + usePrintAmount(item.amount)}</Text>
                             <Text style={tableStyles.tableCell}>{item.date}</Text>
                         </TouchableOpacity>
                     )
@@ -83,17 +90,19 @@ const Logs = ()=>{
                 </TouchableOpacity>
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
+                {/* Log detail */}
+                { selectedLog !== false ? useDisplayLogDetail(selectedLog,logs, ()=>selectLog(false) ) : null }
                 <View style={[GlobalStyles.block, {padding: 10}]}>
                     <Text style={GlobalStyles.title2}>Total incomes</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + printAmount(totalIncomes)}</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + usePrintAmount(totalIncomes)}</Text>
                 </View>
                 <View style={[GlobalStyles.block, {padding: 10}]}>
                     <Text style={GlobalStyles.title2}>Total transfers amount</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount,{color: Colors.lightBlue2}]}>{"<- " + printAmount(totalTransfers)}</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount,{color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(totalTransfers)}</Text>
                 </View>
                 <View style={[GlobalStyles.block, {padding: 10}]}>
                     <Text style={GlobalStyles.title2}>Total expenses</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + printAmount(totalExpenses)}</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + usePrintAmount(totalExpenses)}</Text>
                 </View>
             </ScrollView>
         </View>

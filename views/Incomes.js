@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
 import AddIncomeForm from '../components/Incomes/AddIncomeForm';
-import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
-import { printAmount } from '../modules/Number';
-import { IncomeHooks } from '../hooks/hooks';
+import GlobalStyles,{ createTableStyles } from '../modules/GlobalStyles';
+import { IncomeHooks, usePrintAmount } from '../hooks/hooks';
+import { useDisplayLogDetail, useDeleteLog } from '../hooks/LogHooks';
 const Incomes = ()=>{
     const tableStyles = createTableStyles(3);
     const [addIncomeForm, displayAddIncomeForm] = useState(false);//True to display create income form.
@@ -12,6 +12,16 @@ const Incomes = ()=>{
     const [selectedIncome, selectIncome] = useState(false);
     const getIncomes = async ()=>{
         setIncomes(await IncomeHooks.useGetIncomes());
+    }
+    const deleteIncome = async ()=>{
+        if(selectedIncome === false)
+            return;
+        await useDeleteLog(selectedIncome, (result)=>{
+            if(result === true){
+                selectIncome(false);
+            }
+            getIncomes();
+        });
     }
     useEffect(() => {
         getIncomes();
@@ -34,7 +44,7 @@ const Incomes = ()=>{
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedIncome === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectIncome(item.id) }>
                         <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
-                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + printAmount(item.amount)}</Text>
+                        <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + usePrintAmount(item.amount)}</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
@@ -55,6 +65,10 @@ const Incomes = ()=>{
                 {/* <TouchableOpacity disabled={!selectedIncome ? true : false} onPress={ ()=> !editIncomeForm ? displayEditIncomeForm(true) : displayEditIncomeForm(false) }>
                     <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedIncome ? GlobalStyles.disableButton : null)]}>{ !editIncomeForm ? "Edit income" : "Hide form" }</Text>
                 </TouchableOpacity> */}
+                {/* Delete account button */}
+                <TouchableOpacity disabled={!selectedIncome ? true : false} onPress={deleteIncome}>
+                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedIncome ? GlobalStyles.disableButton : null)]}>Delete</Text>
+                </TouchableOpacity>
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
@@ -63,8 +77,10 @@ const Incomes = ()=>{
                 { addIncomeForm ? <AddIncomeForm getIncomes={getIncomes} /> : null }
                 <View style={{padding: 10}}>
                     <Text style={GlobalStyles.title2}>Total incomes</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + printAmount(IncomeHooks.useGetTotalIncomes(incomes))}</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + usePrintAmount(IncomeHooks.useGetTotalIncomes(incomes))}</Text>
                 </View>
+                {/* Log detail */}
+                { selectedIncome !== false ? useDisplayLogDetail(selectedIncome, incomes, ()=> selectIncome(false)) : null }
             </ScrollView>
         </View>
     );
