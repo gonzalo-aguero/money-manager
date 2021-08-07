@@ -66,10 +66,14 @@ const Logs = ()=>{
                             sign = '<- ';
                             break;
                     }
+                    let accountName = item.affectedAccount;
+                    if(item.type === useLogTypes.transfer){
+                        accountName = "To: " + item.affectedAccount.to;
+                    }
                     return (
                         // List item
                         <TouchableOpacity style={[tableStyles.tableRow, (selectedLog === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectLog(item.id) }>
-                            <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
+                            <Text style={tableStyles.tableCell}>{accountName}</Text>
                             <Text style={[tableStyles.tableCell, itemStyle.amount]}>{sign + usePrintAmount(item.amount)}</Text>
                             <Text style={tableStyles.tableCell}>{item.date}</Text>
                         </TouchableOpacity>

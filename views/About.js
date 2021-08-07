@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
-import GlobalStyles, { Colors } from '../modules/GlobalStyles';
+import GlobalStyles from '../modules/GlobalStyles';
 const About = (props)=>{
     const dataForChildren = props.dataForChildren;
     useEffect(()=>{
@@ -32,14 +32,14 @@ const About = (props)=>{
                 <Text style={[GlobalStyles.text2, {
                     marginHorizontal: 10,
                 }]}>This App is under <Text style={GlobalStyles.warningText}>development</Text>, so there will be functionalities that will not work. 
-                The current version is 1.1.</Text>
+                The current version is 1.1.0.</Text>
                 
                 <Text style={[GlobalStyles.title3, {
                     marginHorizontal: 10,
                     marginTop: 50
                 }]}>Functionalities:</Text>
                 <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.0</Text>
+                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.0.0</Text>
                     <Text style={[GlobalStyles.text2]}>- Create account</Text>
                     <Text style={[GlobalStyles.text2]}>- Edit account</Text>
                     <Text style={[GlobalStyles.text2]}>- Delete account</Text>
@@ -47,13 +47,18 @@ const About = (props)=>{
                     <Text style={[GlobalStyles.text2]}>- Add expenses</Text>
                 </View>
                 <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.1</Text>
+                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.1.0</Text>
                     <Text style={[GlobalStyles.text2]}>- See total reserve</Text>
                     <Text style={[GlobalStyles.text2]}>- See total incomes</Text>
                     <Text style={[GlobalStyles.text2]}>- See total expenses</Text>
                     <Text style={[GlobalStyles.text2]}>- See total transfers amount</Text>
-                    <Text style={[GlobalStyles.text2]}>- See logs</Text>
-                    <Text style={[GlobalStyles.text2]}>- remove logs</Text>
+                    <Text style={[GlobalStyles.text2]}>- See movements</Text>
+                    <Text style={[GlobalStyles.text2]}>- Remove movement log</Text>
+                </View>
+                <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
+                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.1.1</Text>
+                    <Text style={[GlobalStyles.text2]}>- See movements detail</Text>
+                    <Text style={[GlobalStyles.text2]}>- Add transfer</Text>
                 </View>
                 <Text style={[GlobalStyles.text2, {textAlign:'center', marginTop: 100}]}>Developed by GMA Software</Text>
             </ScrollView>

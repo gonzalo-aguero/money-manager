@@ -179,7 +179,7 @@ const Home = (props)=>{
                     ListHeaderComponent={()=>(
                         // List header
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableHeadCell}>Account</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>To</Text>
                             <Text style={logsTableStyles.tableHeadCell}>Amount</Text>
                             <Text style={logsTableStyles.tableHeadCell}>Date</Text>
                         </View>
@@ -187,7 +187,7 @@ const Home = (props)=>{
                     renderItem={({ item }) => (
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
-                            <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
+                            <Text style={logsTableStyles.tableCell}>{item.affectedAccount.to}</Text>
                             <Text style={[logsTableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(item.amount)}</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>

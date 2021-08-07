@@ -24,5 +24,5 @@ It's DoubleM
 * Tuesday 08-05-2021: 4 hours.
 ### End Home view
 ### Fixes, Transfers
-* Friday 08-06-2021: 2.5 hours, 1.25 hours.*
+* Friday 08-06-2021: 2.5 hours, 3 hours.*
 ### End Fixes

@@ -154,6 +154,7 @@ export function useDisplayLogDetail(logId = null, logs = null, onPressClose = ()
     }
 
     const log = logs.find( log => log.id === logId);
+    let affectedAccount = log.affectedAccount;
     let color = null;
     let sign = "";
     if(log.type === useLogTypes.income){
@@ -165,14 +166,15 @@ export function useDisplayLogDetail(logId = null, logs = null, onPressClose = ()
     }else if(log.type === useLogTypes.transfer){
         color = { color: Colors.lightBlue2 };
         sign = '<- ';
+        affectedAccount = `From: ${log.affectedAccount.from}\nTo: ${log.affectedAccount.to}`;
     }
     return (
         <View style={[GlobalStyles.block, { alignItems:'center', padding: 10}]}>
             <View style={{display:'flex',flexDirection:'row', padding: 10}}>
                 <View style={{width: '50%'}}>
                     {/* Affected account */}
-                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Affected account</Text>
-                    <Text style={[GlobalStyles.text]}>{log.affectedAccount}</Text>
+                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Affected account(s)</Text>
+                    <Text style={[GlobalStyles.text]}>{affectedAccount}</Text>
                     {/* Amount */}
                     <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Amount</Text>
                     <Text style={[GlobalStyles.text, color]}>{sign + usePrintAmount(log.amount)}</Text>

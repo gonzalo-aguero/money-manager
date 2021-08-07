@@ -14,31 +14,51 @@ const AddTransferForm = (props)=>{
     const [source, setSource] = useState("");
     const [note, setNote] = useState("");
     const addButtonHandler = async ()=>{
-        //Data of the isssuing account.
-        const issuingAccount = accounts.find( account => account.id === issuingAccountId);
-        //Data of the receiver account.
-        const receiverAccount = accounts.find( account => account.id === receiverAccountId);        
-        //New data of the account to affect.
+        //Data of the issuing account.
+        const issuingAccount = accounts.find( account => account.id === issuingAccountId);       
+        //New data of the issuing account.
         const newIssuingAccountData = {
             id: issuingAccount.id,
             name: issuingAccount.name,
-            reserve: (Number.parseFloat(issuingAccount.reserve)  + Number.parseFloat(amount)),
+            reserve: (Number.parseFloat(issuingAccount.reserve) - Number.parseFloat(amount)),
             description: issuingAccount.description
         };
+
+        //Data of the receiver account.
+        const receiverAccount = accounts.find( account => account.id === receiverAccountId); 
+        //New data of the receiver account.
+        const newReceiverAccountData = {
+            id: receiverAccount.id,
+            name: receiverAccount.name,
+            reserve: (Number.parseFloat(receiverAccount.reserve) + Number.parseFloat(amount)),
+            description: receiverAccount.description
+        };
+
         //New array of accounts with the affected account (array to save).
         let newAccountsArray = accounts;
-        //Get the index of the account to affect.
-        const index = newAccountsArray.findIndex( account => account === issuingAccount);
-        if(index !== -1){
-            newAccountsArray[index] = newIssuingAccountData;
+        const issuingAcountIndex = newAccountsArray.findIndex( account => account === issuingAccount);
+        const receiverAccountIndex = newAccountsArray.findIndex( account => account === receiverAccount);
+
+        if(issuingAcountIndex !== -1){
+            newAccountsArray[issuingAcountIndex] = newIssuingAccountData;
+        }else{
+            console.error("Issuing account not found.");
+            return;
         }
+        if(receiverAccountIndex !== -1){
+            newAccountsArray[receiverAccountIndex] = newReceiverAccountData;
+        }else{
+            console.error("Receiver account not found.");
+            return;
+        }
+
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
         await useCreateLog({
             affectedAccount: {
                 from: issuingAccount.name,
-                to: issuingAccount.name,
+                to: receiverAccount.name,
             },
-            type: useLogTypes.income,
+            type: useLogTypes.transfer,
             amount: amount,
             source: source,
             note: note
@@ -91,7 +111,6 @@ const AddTransferForm = (props)=>{
             </View>
         );
     }
-    
     useEffect(()=>{
         getAccounts();
     }, []);
@@ -116,10 +135,10 @@ const AddTransferForm = (props)=>{
                     }
                 }}
             />
-            {amount <= 0 ?
-                <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
-                :
-                null
+            {
+                amount <= 0 
+                ? <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
+                : null
             }
             {/* Expense source input */}
             <TextInput 

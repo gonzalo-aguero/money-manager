@@ -47,7 +47,7 @@ const Transfers = (props)=>{
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableHeadCell}>From</Text>
+                        <Text style={tableStyles.tableHeadCell}>To</Text>
                         <Text style={tableStyles.tableHeadCell}>Amount</Text>
                         <Text style={tableStyles.tableHeadCell}>Date</Text>
                     </View>
@@ -55,7 +55,7 @@ const Transfers = (props)=>{
                 renderItem={({ item }) => (
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedTransfer === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectTransfer(item.id) }>
-                        <Text style={tableStyles.tableCell}>{item.affectedAccount}</Text>
+                        <Text style={tableStyles.tableCell}>{item.affectedAccount.to}</Text>
                         <Text style={[tableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(item.amount)}</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
