@@ -28,7 +28,7 @@ const About = (props)=>{
             <ScrollView style={GlobalStyles.mainScrollView}>
                 <Text style={[GlobalStyles.title3, {
                     margin: 10,
-                }]}>Hello dear user,</Text>
+                }]}>Hello dear user :),</Text>
                 <Text style={[GlobalStyles.text2, {
                     marginHorizontal: 10,
                 }]}>This App is under <Text style={GlobalStyles.warningText}>development</Text>, so there will be functionalities that will not work. 

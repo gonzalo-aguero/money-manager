@@ -20,6 +20,7 @@ export const AccountHooks = {
         return totalReserve;
     }
 }
+
 export const ExpenseHooks = {
     useGetExpenses: async (logs = null)=>{
         if(logs === null){
@@ -38,6 +39,7 @@ export const ExpenseHooks = {
         return total;
     }
 }
+
 export const IncomeHooks = {
     useGetIncomes: async (logs = null)=>{
         if(logs === null){
@@ -56,6 +58,7 @@ export const IncomeHooks = {
         return total;
     }
 }
+
 export const TransferHooks = {
     useGetTransfers: async (logs = null)=>{
         if(logs === null){
@@ -74,6 +77,7 @@ export const TransferHooks = {
         return total;
     }
 }
+
 /**
  * Get the formatted date in the following format: day-month-year at hours:minutes (for example: "03-07-2021 at 09:04")
  * @returns Formatted date.
@@ -81,15 +85,17 @@ export const TransferHooks = {
 export const useDate = ()=>{
     const date = new Date();
     const separator = '-';
-    const day = date.getDay();
-    const month = date.getMonth();
+    const day = date.getDate();
+    const month = parseInt(date.getMonth()) + 1;
     const year = date.getFullYear();
     const hour = date.getHours();
     const minute = date.getMinutes();
-    let dateString = (day < 10 ? "0" + day : day) +separator+ (month < 10 ? "0" + month : month) +separator+year;
-    dateString += " "+ (hour < 10 ? "0" + hour : hour) +":"+ (minute < 10 ? "0" + minute : minute);
+
+    let dateString = (day < 10 ? ("0" + day) : day) +separator+ (month < 10 ? ("0" + month) : month) +separator+ year;
+    dateString += " "+ (hour < 10 ? ("0" + hour) : hour) +":"+ (minute < 10 ? ("0" + minute) : minute);
     return dateString;
 }
+
 /**
  * Get a possible ID for a new object in the objectArray.
  * @param {Array} objectArray
@@ -114,6 +120,7 @@ export const useCalculateId = (objectArray = false, resetTo0 = true)=>{
     }
     return newId;
 }
+
 /**
  * This function replaces to printAmount() in ../modules/Number.js
  * Return the amount in default format.
