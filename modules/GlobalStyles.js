@@ -1,25 +1,36 @@
 import {StyleSheet} from 'react-native';
+
 export const Colors = {
     darkGreyBG: "#151313",
     darkGreyBG2: "#2B2B2A",
     darkGreyBG3: "#1E1E1C",
-    greyInputBG: "#5A5A5A",
+
+    /** @deprecated Use inputBG instead */
+    greyInputBG: "#D8D8D8",
+    inputBG: "#D8D8D8",
+    inputColor: "#252525",
+    inputPlaceHolderColor: "#959595",
+    
     lightBlue: "#4DC1A7",
     lightBlue2: "#3FECC9",
+    
     goodGreen: "#5AC61E",
     warning: "#CDD21B",
     badOrError: "#C61E1E",
     goodGreenBG: "#13AA13",
     warningBG: "yellow",
     badBG: "red",
+    
     lightColor: "white",
 };
+
 export const Fonts = {
     defaultFont: "normal",
-    font1: "Quicksand-Light",
-    font3: "Quicksand-Medium",
-    font5: "Quicksand-Bold",
+    font1: "normal",//"Quicksand-Light",
+    font3: "normal",//"Quicksand-Medium",
+    font5: "normal",//"Quicksand-Bold",
 }
+
 const Styles = StyleSheet.create({
     header: {
         display: 'flex',
@@ -113,14 +124,14 @@ const Styles = StyleSheet.create({
         borderWidth: .3,
     },
     formInput: {
-        backgroundColor: Colors.greyInputBG,
-        color: Colors.lightColor,
+        backgroundColor: Colors.inputBG,
+        color: Colors.inputColor,
         padding: 4,
         marginVertical: 7,
         borderRadius: 3
     },
     formInputPlaceHolder: {
-        color: '#C6C6C6'
+        color: Colors.inputPlaceHolderColor
     },  
     formSubmitButton: {
         color: Colors.lightColor,
@@ -152,6 +163,7 @@ const Styles = StyleSheet.create({
     }
 });
 export default Styles;
+
 export function createTableStyles(columns = null, height = '25%'){
     let columnWidth;
     if(columns !== null){
@@ -159,6 +171,7 @@ export function createTableStyles(columns = null, height = '25%'){
     }else{
         columnWidth = 'auto';
     }
+
     const tableStyles = StyleSheet.create({
         table: {
             width: '100%',
@@ -191,23 +204,28 @@ export function createTableStyles(columns = null, height = '25%'){
             backgroundColor: 'grey',
         }
     });
+
     return tableStyles;
 }
+
 export const pickerSelectStyles = StyleSheet.create({
     container: {
-        paddingVertical: 7.5,
+        paddingVertical: 0,
         paddingHorizontal: 0,
+        backgroundColor: Colors.inputBG,
     },
     inputIOS: {
-        backgroundColor: 'red',
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+        backgroundColor: Colors.inputBG,
         borderWidth: 0.5,
         borderColor: 'white',
-        color: 'white',
     },
     inputAndroid: {
-        backgroundColor: 'red',
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+        backgroundColor: Colors.inputBG,
         borderWidth: 0.5,
         borderColor: 'white',
-        color: 'white',
     },
 });

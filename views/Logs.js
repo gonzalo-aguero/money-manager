@@ -10,6 +10,7 @@ import {
     useDisplayLogDetail
 } from '../hooks/LogHooks';
 import { IncomeHooks, TransferHooks, ExpenseHooks, usePrintAmount } from '../hooks/hooks';
+
 const Logs = ()=>{
     const tableStyles = createTableStyles(3, 150);
     const [logs, setLogs] = useState([]);
@@ -17,6 +18,7 @@ const Logs = ()=>{
     const [totalIncomes, setTotalIncomes] = useState(0);
     const [totalTransfers, setTotalTransfers] = useState(0);
     const [totalExpenses, setTotalExpenses] = useState(0);
+
     const getLogs = async ()=>{
         const result = await useGetLogs();
         setLogs(result);
@@ -25,6 +27,7 @@ const Logs = ()=>{
         setTotalTransfers(TransferHooks.useGetTotalTransfers(filteredLogs.transfers));
         setTotalExpenses(ExpenseHooks.useGetTotalExpenses(filteredLogs.expenses));
     }
+
     const deleteLog = async ()=>{
         if(selectedLog === false)
             return;
@@ -35,15 +38,18 @@ const Logs = ()=>{
             getLogs();
         });
     }
+
     useEffect(() => {
         getLogs();
     }, []);
+
     return (
         <View style={GlobalStyles.mainContainer}>
             <Text style={GlobalStyles.title}>Movements ({logs.length})</Text>
             <FlatList 
                 data={logs}
                 style={tableStyles.table}
+                
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
@@ -52,6 +58,7 @@ const Logs = ()=>{
                         <Text style={tableStyles.tableHeadCell}>Date</Text>
                     </View>
                 )}
+                
                 renderItem={({ item }) => {
                     const itemStyle = useGetLogStyle(item.type);
                     let sign = "";
@@ -66,10 +73,12 @@ const Logs = ()=>{
                             sign = '<- ';
                             break;
                     }
+                    
                     let accountName = item.affectedAccount;
                     if(item.type === useLogTypes.transfer){
                         accountName = "To: " + item.affectedAccount.to;
                     }
+
                     return (
                         // List item
                         <TouchableOpacity style={[tableStyles.tableRow, (selectedLog === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectLog(item.id) }>
@@ -79,6 +88,7 @@ const Logs = ()=>{
                         </TouchableOpacity>
                     )
                 }}
+                
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
@@ -86,6 +96,7 @@ const Logs = ()=>{
                     </View>
                 )}
             />
+            
             {/* Actions buttons */}
             <View style={GlobalStyles.actionBar}>
                 {/* Delete account button */}
@@ -93,6 +104,7 @@ const Logs = ()=>{
                     <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedLog ? GlobalStyles.disableButton : null)]}>Delete</Text>
                 </TouchableOpacity>
             </View>
+            
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Log detail */}
                 { selectedLog !== false ? useDisplayLogDetail(selectedLog,logs, ()=>selectLog(false) ) : null }

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
-import GlobalStyles, { pickerSelectStyles } from '../../modules/GlobalStyles';
+import {View, Text, TextInput, TouchableOpacity, Picker} from 'react-native';
+import GlobalStyles, { pickerSelectStyles, Colors } from '../../modules/GlobalStyles';
 import { AccountHooks } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
-import RNPickerSelect from 'react-native-picker-select';
+
 const AddIncomeForm = (props)=>{
-    const getIncomes = props.getIncomes;//Method.
     const [accounts,setAccounts] = useState([]);
     const [affectedAccountId, setAffectedAccountId] = useState("");//account id
     const [amount, setAmount] = useState("");
     const [source, setSource] = useState("");
     const [note, setNote] = useState("");
+
     const addButtonHandler = async ()=>{
         //Data of the account to affect.
         const affectedAccount = accounts.find( account => account.id === affectedAccountId);
+        
         //New data of the account to affect.
         const newAccountData = {
             id: affectedAccount.id,
@@ -22,13 +23,16 @@ const AddIncomeForm = (props)=>{
             reserve: (Number.parseFloat(affectedAccount.reserve)  + Number.parseFloat(amount)),
             description: affectedAccount.description
         };
+        
         //New array of accounts with the affected account (array to save).
         let newAccountsArray = accounts;
+        
         //Get the index of the account to affect.
         const index = newAccountsArray.findIndex( account => account === affectedAccount);
         if(index !== -1){
             newAccountsArray[index] = newAccountData;
         }
+
         await defaultSave(newAccountsArray, AccountHooks.useDataKey);
         await useCreateLog({
             affectedAccount: affectedAccount.name,
@@ -37,42 +41,47 @@ const AddIncomeForm = (props)=>{
             source: source,
             note: note
         });
-        getIncomes();
+
+        props.displayAddIncomeForm(false);
+        props.getIncomes();
         setAmount("");
         setSource("");
         setNote("")
     }
+
     const getAccounts = async ()=>{
         setAccounts(await AccountHooks.useGetAccounts());
     }
+
     const accountSelector = ()=>{
         const accountsForSelect = accounts.map( account => {
-            return {label: account.name, value: account.id};
+            return <Picker.Item color={Colors.inputColor} label={account.name} value={account.id}/>;
         }); 
+
         return(
             <View style={[GlobalStyles.formInput, pickerSelectStyles.container]}>
-                <RNPickerSelect
-                    items={accountsForSelect}
-                    style={pickerSelectStyles}
-                    onValueChange={ value => {
-                        setAffectedAccountId(value);
-                    }}
-                    placeholder={{
-                        label: 'Select the account to affect',
-                        value: null
-                    }}
-                />
+                <Picker
+                    selectedValue={affectedAccountId}
+                    onValueChange={(value, itemIndex) => setAffectedAccountId(value)}
+                >
+                    <Picker.Item color={Colors.inputColor} label="Select the account to affect" value="null" />
+                    {accountsForSelect}
+                </Picker>
             </View>
         );
     }
+
     useEffect(()=>{
         getAccounts();
     }, []);
+
     return (
         <View style={GlobalStyles.form}>
             <Text style={GlobalStyles.title2}>Add a new income</Text>
+            
             {/* Account selector */}
             { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            
             {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
@@ -87,11 +96,13 @@ const AddIncomeForm = (props)=>{
                     }
                 }}
             />
+            
             {amount <= 0 ?
                 <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
                 :
                 null
             }
+            
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
@@ -102,6 +113,7 @@ const AddIncomeForm = (props)=>{
                     setSource(value);
                 }}
             />
+            
             {/* Note input */}
             <TextInput 
                 style={GlobalStyles.formInput}
@@ -114,6 +126,7 @@ const AddIncomeForm = (props)=>{
                     setNote(value);
                 }}
             />
+            
             {/* Submit button */}
             <TouchableOpacity
                 onPress={ addButtonHandler }
@@ -124,4 +137,5 @@ const AddIncomeForm = (props)=>{
         </View>
     );
 }
+
 export default AddIncomeForm;

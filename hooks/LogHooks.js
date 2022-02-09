@@ -11,13 +11,13 @@ import {
     useDate
 } from './hooks';
 
-
 export const useDataKey = "logs";
 export const useLogTypes = {
         income: "income",
         expense: "expense",
         transfer: "transfer"
     };
+
 export async function useGetLogs(){
     const result = await defaultGet(useDataKey);
     console.log("useGetLogs executed")
@@ -27,6 +27,7 @@ export async function useGetLogs(){
         return result.sort((a,b)=> b.id -a.id);            ;
     }
 }
+
 export async function useGetFilteredLogs(logs = null){
     if(logs === null){
         logs = await useGetLogs();
@@ -37,6 +38,7 @@ export async function useGetFilteredLogs(logs = null){
         expenses: await ExpenseHooks.useGetExpenses(logs)
     };
 }
+
 /**
  * Createa a log.
  * @param {Object} logData Object with the log data.
@@ -53,10 +55,12 @@ export async function useCreateLog(logData){
     let logs = [];
     logs = await useGetLogs();
     const newId = useCalculateId(logs, false);
+    
     if(newId === false){
         Alert.alert("Oh no!","An error has ocurred!");
         return false;
     }
+
     const log = {
         id: newId,
         affectedAccount: logData.affectedAccount,
@@ -66,9 +70,11 @@ export async function useCreateLog(logData){
         source: logData.source,
         note: logData.note
     }
+
     logs.push(log);
     await defaultSave(logs, useDataKey);
 }
+
 /**
  * @param {Number} logId 
  * @param {Function} callback (optional) It receives as parameter: True if everything is ok, otherwise it is false. 
@@ -107,6 +113,7 @@ export async function useDeleteLog(logId = null, callback = ()=>{}){
         ]
     );
 }
+
 export function useGetLogStyle(logType = null){
     if(logType === null){
         console.error("logType is required in useGetLogStyle().");
@@ -136,6 +143,7 @@ export function useGetLogStyle(logType = null){
     }
     return style;
 }
+
 /**
  * Returns a block with the log detail.
  * @param {Number} logId ID of the log.

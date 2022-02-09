@@ -13,12 +13,15 @@ const Transfers = (props)=>{
     const [addTransferForm, displayAddTransferForm] = useState(false);//True to display create transfer form.
     const [transfers, setTransfers] = useState([]);
     const [selectedTransfer, selectTransfer] = useState(false);
+    
     const getTransfers = async ()=>{
         setTransfers(await TransferHooks.useGetTransfers());
     }
+    
     const deleteTransfer = async ()=>{
         if(selectedTransfer === false)
             return;
+            
         await useDeleteLog(selectedTransfer, (result)=>{
             if(result === true){
                 selectTransfer(false);
@@ -26,9 +29,11 @@ const Transfers = (props)=>{
             getTransfers();
         });
     }
+    
     useEffect(() => {
         getTransfers();
     }, []);
+    
     return (
         <View style={GlobalStyles.mainContainer}>
             <View style={GlobalStyles.header}>
@@ -41,9 +46,11 @@ const Transfers = (props)=>{
                     {getViewIconImage(Icons.accounts, currentViewName === "transfers", GlobalStyles.activeButton)}
                 </TouchableOpacity>
             </View>
+
             <FlatList 
                 data={transfers}
                 style={tableStyles.table}
+
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
@@ -52,6 +59,7 @@ const Transfers = (props)=>{
                         <Text style={tableStyles.tableHeadCell}>Date</Text>
                     </View>
                 )}
+            
                 renderItem={({ item }) => (
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedTransfer === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectTransfer(item.id) }>
@@ -60,6 +68,7 @@ const Transfers = (props)=>{
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
+            
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
@@ -67,28 +76,33 @@ const Transfers = (props)=>{
                     </View>
                 )}
             />
+            
             {/* Actions buttons */}
             <View style={GlobalStyles.actionBar}>
                 {/* Add expense button */}
                 <TouchableOpacity onPress={ ()=> !addTransferForm ? displayAddTransferForm(true) : displayAddTransferForm(false) }>
                     <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addTransferForm ? "Add transfer" : "Hide form" }</Text>
                 </TouchableOpacity>
+            
                 {/* Delete account button */}
                 <TouchableOpacity disabled={!selectedTransfer ? true : false} onPress={deleteTransfer}>
                     <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedTransfer ? GlobalStyles.disableButton : null)]}>Delete</Text>
                 </TouchableOpacity>
             </View>
+
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Add Transfer Form */}
-                { addTransferForm ? <AddTransferForm getTransfers={getTransfers} /> : null }
+                { addTransferForm ? <AddTransferForm getTransfers={getTransfers} displayAddTransferForm={displayAddTransferForm}/> : null }
                 <View style={{padding: 10}}>
                     <Text style={GlobalStyles.title2}>Total transfers</Text>
                     <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + usePrintAmount(TransferHooks.useGetTotalTransfers(transfers))}</Text>
                 </View>
+
                 {/* Log detail */}
                 { selectedTransfer !== false ? useDisplayLogDetail(selectedTransfer, transfers, ()=> selectTransfer(false)) : null }
             </ScrollView>
         </View>
     );
 }
+
 export default Transfers;

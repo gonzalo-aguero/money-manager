@@ -9,6 +9,8 @@ import Accounts from './views/Accounts';
 import Transfers from './views/Transfers';
 import Logs from './views/Logs';
 import About from './views/About';
+import L from './hooks/LogHooks';
+
 const App = ()=>{
     const [view, setView] = useState("home");
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -73,6 +75,7 @@ const App = ()=>{
         if(!fontsLoaded){
             loadFonts();
         }
+        
     },[]);
     return (
         <View style={{backgroundColor: 'white'}}>
