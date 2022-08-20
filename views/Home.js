@@ -3,6 +3,7 @@ import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import GlobalStyles, { createTableStyles, Colors } from '../modules/GlobalStyles';
 import { AccountHooks, usePrintAmount, useDate } from '../hooks/hooks';
 import { useGetFilteredLogs} from '../hooks/LogHooks';
+import FS from 'react-native-fs';
 
 const Home = (props)=>{
     const dataForChildren = props.dataForChildren;
@@ -82,6 +83,10 @@ const Home = (props)=>{
     useEffect(()=>{
         getAccounts();
         getFilteredLogs();
+
+        const PATH = './hello world/an.txt';
+        const content = "OMG, I has write in this fucking file :D";
+        FS.writeFile(PATH, content, 'utf8');
     },[]);
     
     return (

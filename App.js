@@ -64,11 +64,11 @@ const App = ()=>{
         return viewToDisplay;
     }
     const loadFonts = async ()=>{
-        await Font.loadAsync({
-            'Quicksand-Light': require("./assets/fonts/Quicksand/static/Quicksand-Light.ttf"),
-            'Quicksand-Medium': require("./assets/fonts/Quicksand/static/Quicksand-Medium.ttf"),
-            'Quicksand-Bold': require("./assets/fonts/Quicksand/static/Quicksand-Bold.ttf")
-        });
+        // await Font.loadAsync({
+        //     'Quicksand-Light': require("./assets/fonts/Quicksand/static/Quicksand-Light.ttf"),
+        //     'Quicksand-Medium': require("./assets/fonts/Quicksand/static/Quicksand-Medium.ttf"),
+        //     'Quicksand-Bold': require("./assets/fonts/Quicksand/static/Quicksand-Bold.ttf")
+        // });
         setFontsLoaded(true);
     }
     useEffect(()=>{
