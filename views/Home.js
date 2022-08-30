@@ -3,9 +3,20 @@ import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import GlobalStyles, { createTableStyles, Colors } from '../modules/GlobalStyles';
 import { AccountHooks, usePrintAmount, useDate } from '../hooks/hooks';
 import { useGetFilteredLogs} from '../hooks/LogHooks';
-import FS from 'react-native-fs';
+// import FS from 'react-native-fs';
+
+
+import { en, es } from '../localization';
+import * as Localization from 'expo-localization';
+import i18n from 'react-native-i18n';
 
 const Home = (props)=>{
+    let [locale, setLocale] = useState(Localization.locale);
+    // i18n.fallbacks = true;
+    // i18n.translations = { en, es };
+    // i18n.locale = locale;
+
+
     const dataForChildren = props.dataForChildren;
     const tableStyles = createTableStyles(2, 125);
     const logsTableStyles = createTableStyles(3, 100);
@@ -86,7 +97,7 @@ const Home = (props)=>{
 
         const PATH = './hello world/an.txt';
         const content = "OMG, I has write in this fucking file :D";
-        FS.writeFile(PATH, content, 'utf8');
+        // FS.writeFile(PATH, content, 'utf8');
     },[]);
     
     return (
@@ -98,7 +109,7 @@ const Home = (props)=>{
              * ======================================
              ***/}
             <View style={GlobalStyles.header}>
-                <Text style={GlobalStyles.title}>Home</Text>
+                <Text style={GlobalStyles.title}>{/*i18n.currentLocale*/ Localization.locale}</Text>
                 <TouchableOpacity onPress={()=> dataForChildren.view.setView("about")} style={{
                     position: 'absolute',
                     right: 15,
