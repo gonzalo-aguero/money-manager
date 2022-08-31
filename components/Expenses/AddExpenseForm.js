@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TextInput, TouchableOpacity, Picker} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import GlobalStyles, { pickerSelectStyles, Colors } from '../../modules/GlobalStyles';
 import { AccountHooks } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
-
+import lang from '../../lang/localization';
+import * as Localization from 'expo-localization';
 const AddExpenseForm = (props)=>{
+    const [locale, setLocale] = useState(Localization.locale.split('-')[0]);
     const [accounts,setAccounts] = useState([]);
     const [affectedAccountId, setAffectedAccountId] = useState("");//account id
     const [amount, setAmount] = useState("");
@@ -64,7 +67,7 @@ const AddExpenseForm = (props)=>{
                     selectedValue={affectedAccountId}
                     onValueChange={(value, itemIndex) => setAffectedAccountId(value)}
                 >
-                    <Picker.Item color={Colors.inputColor} label="Select the account to affect" value="null" />
+                    <Picker.Item color={Colors.inputColor} label={ lang[locale].forms.selectAccount } value="null" />
                     {accountsForSelect}
                 </Picker>
             </View>
@@ -77,7 +80,7 @@ const AddExpenseForm = (props)=>{
     
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Add a new expense</Text>
+            <Text style={GlobalStyles.title2}>{ lang[locale].expenses.formTitle }</Text>
             
             {/* Account selector */}
             { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
@@ -85,7 +88,7 @@ const AddExpenseForm = (props)=>{
             {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Amount (Example: 17489.99)"
+                placeholder={ lang[locale].forms.amount }
                 value={""+amount}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -98,7 +101,7 @@ const AddExpenseForm = (props)=>{
             />
             
             {amount <= 0 ?
-                <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
+                <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{ lang[locale].forms.greaterThan }0</Text>
                 :
                 null
             }
@@ -106,7 +109,7 @@ const AddExpenseForm = (props)=>{
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Source (Example: Shopping, Friends, Food, etc)"
+                placeholder={ lang[locale].forms.expenseSource }
                 value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -117,7 +120,7 @@ const AddExpenseForm = (props)=>{
             {/* Note input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Note"
+                placeholder={ lang[locale].forms.note }
                 value={note}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
@@ -132,7 +135,7 @@ const AddExpenseForm = (props)=>{
                 onPress={ addButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
-                <Text style={GlobalStyles.formSubmitButtonText}>Add</Text>
+                <Text style={GlobalStyles.formSubmitButtonText}>{ lang[locale].buttons.add }</Text>
             </TouchableOpacity>
         </View>
     );

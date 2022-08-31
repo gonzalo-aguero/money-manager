@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Picker, Alert} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import GlobalStyles, { pickerSelectStyles, Colors } from '../../modules/GlobalStyles';
 import { AccountHooks } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';

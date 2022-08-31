@@ -4,7 +4,12 @@ import AddExpenseForm from '../components/Expenses/AddExpenseForm';
 import GlobalStyles,{ createTableStyles } from '../modules/GlobalStyles';
 import { ExpenseHooks, usePrintAmount } from '../hooks/hooks';
 import { useDisplayLogDetail, useDeleteLog } from '../hooks/LogHooks';
+
+import lang from '../lang/localization';
+import * as Localization from 'expo-localization';
+
 const Expenses = ()=>{
+    const [locale, setLocale] = useState(Localization.locale.split('-')[0]);
     const tableStyles = createTableStyles(3);
     const [addExpenseForm, displayAddExpenseForm] = useState(false);//True to display create account form.
     const [editExpenseForm, displayEditAccountForm] = useState(false);//True to display edit account form.
@@ -33,7 +38,7 @@ const Expenses = ()=>{
     
     return (
         <View style={GlobalStyles.mainContainer}>
-            <Text style={GlobalStyles.title}>Expenses</Text>
+            <Text style={GlobalStyles.title}>{ lang[locale].expenses.title }</Text>
             
             <FlatList 
                 data={expenses}
@@ -42,9 +47,9 @@ const Expenses = ()=>{
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableHeadCell}>Account</Text>
-                        <Text style={tableStyles.tableHeadCell}>Amount</Text>
-                        <Text style={tableStyles.tableHeadCell}>Date</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ lang[locale].tables.account }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ lang[locale].tables.amount }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ lang[locale].tables.date }</Text>
                     </View>
                 )}
                 
@@ -60,7 +65,7 @@ const Expenses = ()=>{
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableCell}>No expenses recorded</Text>
+                        <Text style={tableStyles.tableCell}>{ lang[locale].tables.noRecords.expenses }</Text>
                     </View>
                 )}
             />
@@ -70,7 +75,7 @@ const Expenses = ()=>{
                 
                 {/* Add expense button */}
                 <TouchableOpacity onPress={ ()=> !addExpenseForm ? displayAddExpenseForm(true) : displayAddExpenseForm(false) }>
-                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addExpenseForm ? "Add expense" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addExpenseForm ? lang[locale].buttons.addExpense : lang[locale].buttons.hideForm }</Text>
                 </TouchableOpacity>
                 
                 {/* Edit expense button */}
@@ -79,7 +84,7 @@ const Expenses = ()=>{
                 </TouchableOpacity> */}
                 
                 <TouchableOpacity disabled={!selectedExpense ? true : false} onPress={deleteIncome}>
-                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedExpense ? GlobalStyles.disableButton : null)]}>Delete</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedExpense ? GlobalStyles.disableButton : null)]}>{ lang[locale].buttons.delete }</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView style={GlobalStyles.mainScrollView}>
@@ -89,7 +94,7 @@ const Expenses = ()=>{
                 
                 { addExpenseForm ? <AddExpenseForm getExpenses={getExpenses} displayAddExpenseForm={displayAddExpenseForm} /> : null }
                 <View style={{padding: 10}}>
-                    <Text style={GlobalStyles.title2}>Total expenses</Text>
+                    <Text style={GlobalStyles.title2}>{ lang[locale].expenses.totalExpenses }</Text>
                     <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{"- " + usePrintAmount(ExpenseHooks.useGetTotalExpenses(expenses))}</Text>
                 </View>
                 
