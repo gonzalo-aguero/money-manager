@@ -1,5 +1,7 @@
 import { defaultGet } from '../modules/Storage';
 import { useGetLogs, useLogTypes } from './LogHooks';
+import lang from '../lang/localization';
+import { locale } from 'expo-localization';
 
 export const AccountHooks = {
     useDataKey: "accounts",
@@ -130,4 +132,11 @@ export const useCalculateId = (objectArray = false, resetTo0 = true)=>{
 export function usePrintAmount(amount = 0){
     amount = Number.parseFloat(amount);
     return '$' + amount.toFixed(2);
+}
+
+export function useLocale(){
+    return locale.split('-')[0];
+}
+export function useLang() {
+    return lang[useLocale()];
 }

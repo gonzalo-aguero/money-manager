@@ -6,6 +6,7 @@ Accumulated development time: 47 hours.
 ## Changes in version 1.2.1
 * Language (es,en) by locate.
 * Totals in Income, expense and transfers views hidden.
+* Signs "+","-" and "<-" removed.
 
 
 

@@ -8,7 +8,8 @@ import {
     TransferHooks,
     usePrintAmount,
     useCalculateId,
-    useDate
+    useDate,
+    useLang
 } from './hooks';
 
 export const useDataKey = "logs";
@@ -176,31 +177,32 @@ export function useDisplayLogDetail(logId = null, logs = null, onPressClose = ()
         sign = '<- ';
         affectedAccount = `From: ${log.affectedAccount.from}\nTo: ${log.affectedAccount.to}`;
     }
+    sign = "";
     return (
         <View style={[GlobalStyles.block, { alignItems:'center', padding: 10}]}>
             <View style={{display:'flex',flexDirection:'row', padding: 10}}>
                 <View style={{width: '50%'}}>
                     {/* Affected account */}
-                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Affected account(s)</Text>
+                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>{ useLang().logDetail.affectedAccount }</Text>
                     <Text style={[GlobalStyles.text]}>{affectedAccount}</Text>
                     {/* Amount */}
-                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Amount</Text>
+                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>{ useLang().logDetail.amount }</Text>
                     <Text style={[GlobalStyles.text, color]}>{sign + usePrintAmount(log.amount)}</Text>
                     {/* Date */}
-                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>Date</Text>
+                    <Text style={[GlobalStyles.text, {fontFamily: Fonts.font3}]}>{ useLang().logDetail.date }</Text>
                     <Text style={[GlobalStyles.text]}>{log.date}</Text>
                 </View>
                 <View style={{width: '50%'}}>
                     {/* Source */}
-                    <Text style={[{textAlign:'right'}, GlobalStyles.text, {fontFamily: Fonts.font3}]}>Source</Text>
+                    <Text style={[{textAlign:'right'}, GlobalStyles.text, {fontFamily: Fonts.font3}]}>{ useLang().logDetail.source }</Text>
                     <Text style={[{textAlign:'right'}, GlobalStyles.text]}>{log.source}</Text>
                     {/* Note */}
-                    <Text style={[{textAlign:'right'}, GlobalStyles.text, {fontFamily: Fonts.font3}]}>Note</Text>
+                    <Text style={[{textAlign:'right'}, GlobalStyles.text, {fontFamily: Fonts.font3}]}>{ useLang().logDetail.note }</Text>
                     <Text style={[{textAlign:'right'}, GlobalStyles.text]}>{log.note}</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={ onPressClose } style={[GlobalStyles.button,{backgroundColor: Colors.darkGreyBG2, width: 85}]}>
-                <Text style={[GlobalStyles.text, {textAlign: 'center'}]}>Close</Text>
+                <Text style={[GlobalStyles.text, {textAlign: 'center'}]}>{ useLang().buttons.close }</Text>
             </TouchableOpacity>
         </View>
     );

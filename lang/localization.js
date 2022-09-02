@@ -20,12 +20,21 @@ export default {
                 expenses: "No expenses recorded",
                 incomes: "No incomes recorded",
                 transfers: "No transfers recorded",
+                logs: "No logs found"
             }
         },
         expenses: {
             title: "Expenses",
             totalExpenses: "Total expenses",
             formTitle: "Add a new expense",
+        },
+        incomes: {
+            title: "Incomes",
+            formTitle: "Add a new income",
+        },
+        logs: {
+            title: "Movements",
+            noLogs: "No logs found",
         },
         buttons: {
             addExpense: "Add expense",
@@ -50,9 +59,17 @@ export default {
             incomeSource: "Source (Example: Job)",
             transferSource: "Source",
             note: "Note",
+            source: "Source",
             accountName: "Account name",
             accountReseve: "Account reserve",
             accountDescription: "Account description",
+        },
+        logDetail: {
+            affectedAccount: "Affected account(s)",
+            amount: "Amount",
+            date: "Date",
+            source: "Source",
+            note: "Note"
         }
     },
 
@@ -79,12 +96,21 @@ export default {
                 expenses: "No hay gastos registrados",
                 incomes: "No hay ingresos registrados",
                 transfers: "No hay transferencias registradas",
+                logs: "No hay movimientos registrados"
             }
         },
         expenses: {
             title: "Gastos",
             totalExpenses: "Gasto total",
             formTitle: "Agregar un nuevo gasto",
+        },
+        incomes: {
+            title: "Ingresos",
+            formTitle: "Agregar nuevo ingreso",
+        },
+        logs: {
+            title: "Movimientos",
+            noLogs: "No se han registrado movimientos.",
         },
         buttons: {
             addExpense: "Agregar gasto",
@@ -109,9 +135,17 @@ export default {
             incomeSource: "Origen (Ej: Trabajo, Venta, etc)",
             transferSource: "Concepto",
             note: "Nota",
+            source: "Origen/Concepto",
             accountName: "Nombre de la cuenta",
             accountReseve: "Reserva (cant. de dinero)",
             accountDescription: "Descripción",
+        },
+        logDetail: {
+            affectedAccount: "Cuenta afectada",
+            amount: "Monto",
+            date: "Fecha",
+            source: "Origen / Concepto",
+            note: "Nota"
         }
     }
 }

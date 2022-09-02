@@ -90,21 +90,25 @@ const Accounts = (props)=>{
                     </View>
                 )}
             />
+
             {/* Actions buttons */}
             <View style={GlobalStyles.actionBar}>
                 {/* Create account button */}
                 <TouchableOpacity onPress={ ()=> !createAccountForm ? displayCreateAccountForm(true) : displayCreateAccountForm(false) }>
                     <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !createAccountForm ? "Create account" : "Hide form" }</Text>
                 </TouchableOpacity>
+
                 {/* Edit account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={ ()=> !editAccountForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
                     <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ !editAccountForm ? "Edit account" : "Hide form" }</Text>
                 </TouchableOpacity>
+                
                 {/* Delete account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={deleteAccount}>
                     <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedAccount ? GlobalStyles.disableButton : null)]}>Delete</Text>
                 </TouchableOpacity>
             </View>
+
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Forms */}
                 { editAccountForm ? <EditAccountForm accounts={accounts} getAccounts={getAccounts} selectedAccountId={selectedAccount} displayEditAccountForm={displayEditAccountForm} /> : null }

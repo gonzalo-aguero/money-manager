@@ -207,7 +207,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[logsTableStyles.tableCell,GlobalStyles.badText]}>{"- " + usePrintAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell,GlobalStyles.badText]}>{ usePrintAmount(item.amount) }</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}
@@ -252,7 +252,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount}</Text>
-                            <Text style={[logsTableStyles.tableCell,GlobalStyles.goodText]}>{"+ " + usePrintAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell,GlobalStyles.goodText]}>{ usePrintAmount(item.amount) }</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}
@@ -297,7 +297,7 @@ const Home = (props)=>{
                         // List item
                         <View style={[logsTableStyles.tableRow]}>
                             <Text style={logsTableStyles.tableCell}>{item.affectedAccount.to}</Text>
-                            <Text style={[logsTableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(item.amount)}</Text>
+                            <Text style={[logsTableStyles.tableCell, {color: Colors.lightBlue2}]}>{ usePrintAmount(item.amount) }</Text>
                             <Text style={logsTableStyles.tableCell}>{item.date}</Text>
                         </View>
                     )}

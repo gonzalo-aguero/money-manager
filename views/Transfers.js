@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, ScrollView, Text, FlatList,TouchableOpacity, Alert} from 'react-native';
+import {View, ScrollView, Text, FlatList,TouchableOpacity } from 'react-native';
 import AddTransferForm from '../components/Transfers/AddTransferForm';
 import GlobalStyles,{ createTableStyles, Colors } from '../modules/GlobalStyles';
 import { TransferHooks, usePrintAmount } from '../hooks/hooks';
@@ -64,7 +64,7 @@ const Transfers = (props)=>{
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedTransfer === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectTransfer(item.id) }>
                         <Text style={tableStyles.tableCell}>{item.affectedAccount.to}</Text>
-                        <Text style={[tableStyles.tableCell, {color: Colors.lightBlue2}]}>{"<- " + usePrintAmount(item.amount)}</Text>
+                        <Text style={[tableStyles.tableCell, {color: Colors.lightBlue2}]}>{ usePrintAmount(item.amount) }</Text>
                         <Text style={tableStyles.tableCell}>{item.date}</Text>
                     </TouchableOpacity>
                 )}
@@ -93,10 +93,6 @@ const Transfers = (props)=>{
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Add Transfer Form */}
                 { addTransferForm ? <AddTransferForm getTransfers={getTransfers} displayAddTransferForm={displayAddTransferForm}/> : null }
-                <View style={{padding: 10}}>
-                    <Text style={GlobalStyles.title2}>Total transfers</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{"+ " + usePrintAmount(TransferHooks.useGetTotalTransfers(transfers))}</Text>
-                </View>
 
                 {/* Log detail */}
                 { selectedTransfer !== false ? useDisplayLogDetail(selectedTransfer, transfers, ()=> selectTransfer(false)) : null }

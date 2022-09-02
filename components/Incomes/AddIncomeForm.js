@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {View, Text, TextInput, TouchableOpacity } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import GlobalStyles, { pickerSelectStyles, Colors } from '../../modules/GlobalStyles';
-import { AccountHooks } from '../../hooks/hooks';
+import { AccountHooks, useLang } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
 
@@ -65,7 +65,7 @@ const AddIncomeForm = (props)=>{
                     selectedValue={affectedAccountId}
                     onValueChange={(value, itemIndex) => setAffectedAccountId(value)}
                 >
-                    <Picker.Item color={Colors.inputColor} label="Select the account to affect" value="null" />
+                    <Picker.Item color={Colors.inputColor} label={ useLang().forms.selectAccount } value="null" />
                     {accountsForSelect}
                 </Picker>
             </View>
@@ -78,7 +78,7 @@ const AddIncomeForm = (props)=>{
 
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Add a new income</Text>
+            <Text style={GlobalStyles.title2}>{ useLang().incomes.formTitle }</Text>
             
             {/* Account selector */}
             { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
@@ -86,7 +86,7 @@ const AddIncomeForm = (props)=>{
             {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Amount (Example: 17489.99)"
+                placeholder={ useLang().forms.amount }
                 value={""+amount}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -99,7 +99,7 @@ const AddIncomeForm = (props)=>{
             />
             
             {amount <= 0 ?
-                <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
+                <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{ useLang().forms.greaterThan }0</Text>
                 :
                 null
             }
@@ -107,7 +107,7 @@ const AddIncomeForm = (props)=>{
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Source (For example: Job)"
+                placeholder={ useLang().forms.incomeSource }
                 value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -118,7 +118,7 @@ const AddIncomeForm = (props)=>{
             {/* Note input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Note"
+                placeholder={ useLang().forms.note }
                 value={note}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
@@ -133,7 +133,7 @@ const AddIncomeForm = (props)=>{
                 onPress={ addButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
-                <Text style={GlobalStyles.formSubmitButtonText}>Add</Text>
+                <Text style={GlobalStyles.formSubmitButtonText}>{ useLang().buttons.add}</Text>
             </TouchableOpacity>
         </View>
     );
