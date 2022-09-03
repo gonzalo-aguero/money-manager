@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import GlobalStyles, { createTableStyles, Colors } from '../modules/GlobalStyles';
-import { AccountHooks, usePrintAmount, useDate } from '../hooks/hooks';
+import { AccountHooks, usePrintAmount, useLang } from '../hooks/hooks';
 import { useGetFilteredLogs} from '../hooks/LogHooks';
 // import FS from 'react-native-fs';
 
-
-import lang from '../lang/localization';
-import * as Localization from 'expo-localization';
-
 const Home = (props)=>{
-    let [locale, setLocale] = useState(Localization.locale.split('-')[0]);
-
     const dataForChildren = props.dataForChildren;
     const tableStyles = createTableStyles(2, 125);
     const logsTableStyles = createTableStyles(3, 100);
@@ -104,12 +98,7 @@ const Home = (props)=>{
              * ======================================
              ***/}
             <View style={GlobalStyles.header}>
-                <Text style={GlobalStyles.title}>{lang[locale].home.title}</Text>
-                {
-                    ( ()=>{
-                        console.log("locale: ", locale);
-                    })()
-                }
+                <Text style={GlobalStyles.title}>{useLang().home.title}</Text>
                 <TouchableOpacity onPress={()=> dataForChildren.view.setView("about")} style={{
                     position: 'absolute',
                     right: 15,
@@ -143,7 +132,7 @@ const Home = (props)=>{
                 borderTopColor: Colors.darkGreyBG2,
                 borderBottomColor: Colors.darkGreyBG2
             }]}>
-                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ lang[locale].home.totalAmount }</Text>
+                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ useLang().home.totalAmount }</Text>
                 <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{usePrintAmount(totalReserve)}</Text>
                 
                 {/* Accounts table */}
@@ -154,8 +143,8 @@ const Home = (props)=>{
                     ListHeaderComponent={()=>(
                         // List header
                         <View style={tableStyles.tableRow}>
-                            <Text style={tableStyles.tableHeadCell}>{ lang[locale].tables.name }</Text>
-                            <Text style={tableStyles.tableHeadCell}>{ lang[locale].tables.reserve }</Text>
+                            <Text style={tableStyles.tableHeadCell}>{ useLang().tables.name }</Text>
+                            <Text style={tableStyles.tableHeadCell}>{ useLang().tables.reserve }</Text>
                         </View>
                     )}
                     
@@ -189,7 +178,7 @@ const Home = (props)=>{
              * ========================================
              ***/}
             <View>
-                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ lang[locale].home.lastestExpenses }</Text>
+                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ useLang().home.lastestExpenses }</Text>
                 <FlatList 
                     data={last5Expenses}
                     style={logsTableStyles.table}
@@ -197,9 +186,9 @@ const Home = (props)=>{
                     ListHeaderComponent={()=>(
                         // List header
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.account }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.amount }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.date }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.account }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.amount }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.date }</Text>
                         </View>
                     )}
                     
@@ -215,7 +204,7 @@ const Home = (props)=>{
                     ListEmptyComponent={() => (
                         // Empty list message
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableCell}>{ lang[locale].tables.noRecords.expenses }</Text>
+                            <Text style={logsTableStyles.tableCell}>{ useLang().tables.noRecords.expenses }</Text>
                         </View>
                     )}
                 />
@@ -234,7 +223,7 @@ const Home = (props)=>{
              * =======================================
              ***/}
             <View>
-                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ lang[locale].home.lastestIncomes }</Text>
+                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ useLang().home.lastestIncomes }</Text>
                 <FlatList 
                     data={last5Incomes}
                     style={logsTableStyles.table}
@@ -242,9 +231,9 @@ const Home = (props)=>{
                     ListHeaderComponent={()=>(
                         // List header
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.account }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.amount }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.date }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.account }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.amount }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.date }</Text>
                         </View>
                     )}
                     
@@ -260,7 +249,7 @@ const Home = (props)=>{
                     ListEmptyComponent={() => (
                         // Empty list message
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableCell}>{ lang[locale].tables.noRecords.incomes }</Text>
+                            <Text style={logsTableStyles.tableCell}>{ useLang().tables.noRecords.incomes }</Text>
                         </View>
                     )}
                 />
@@ -279,7 +268,7 @@ const Home = (props)=>{
              * =========================================
              ***/}
             <View>
-                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ lang[locale].home.lastestTransfers }</Text>
+                <Text style={[GlobalStyles.title3, {textAlign:'center'}]}>{ useLang().home.lastestTransfers }</Text>
                 <FlatList 
                     data={last5Transfers}
                     style={logsTableStyles.table}
@@ -287,9 +276,9 @@ const Home = (props)=>{
                     ListHeaderComponent={()=>(
                         // List header
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.to }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.amount }</Text>
-                            <Text style={logsTableStyles.tableHeadCell}>{ lang[locale].tables.date }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.to }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.amount }</Text>
+                            <Text style={logsTableStyles.tableHeadCell}>{ useLang().tables.date }</Text>
                         </View>
                     )}
                     
@@ -305,7 +294,7 @@ const Home = (props)=>{
                     ListEmptyComponent={() => (
                         // Empty list message
                         <View style={logsTableStyles.tableRow}>
-                            <Text style={logsTableStyles.tableCell}>{ lang[locale].tables.noRecords.transfers }</Text>
+                            <Text style={logsTableStyles.tableCell}>{ useLang().tables.noRecords.transfers }</Text>
                         </View>
                     )}
                 />

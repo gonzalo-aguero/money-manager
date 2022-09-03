@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
 import { defaultSave } from '../../modules/Storage';
-import { AccountHooks } from '../../hooks/hooks';
+import { AccountHooks, useLang } from '../../hooks/hooks';
 const EditAccountForm = (props)=>{
     let accounts = props.accounts;//Array[]
     const getAccounts = props.getAccounts;//Method()
@@ -29,10 +29,10 @@ const EditAccountForm = (props)=>{
     }
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Edit account</Text>
+            <Text style={GlobalStyles.title2}>{ useLang().accounts.editFormTitle }</Text>
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Account name"
+                placeholder={ useLang().forms.accountName }
                 value={accountName}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -41,7 +41,7 @@ const EditAccountForm = (props)=>{
             />
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Account reserve (Example: 17489.99)"
+                placeholder={ useLang().forms.accountReserve }
                 value={"" + accountReserve}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -53,7 +53,7 @@ const EditAccountForm = (props)=>{
             />
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Account description"
+                placeholder={ useLang().forms.accountDescription }
                 value={accountDescription}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
@@ -66,7 +66,7 @@ const EditAccountForm = (props)=>{
                 onPress={ saveChangesButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
-                <Text style={GlobalStyles.formSubmitButtonText}>Save changes</Text>
+                <Text style={GlobalStyles.formSubmitButtonText}>{ useLang().buttons.saveChanges }</Text>
             </TouchableOpacity>
         </View>
     );

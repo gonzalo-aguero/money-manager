@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import GlobalStyles, { pickerSelectStyles, Colors } from '../../modules/GlobalStyles';
-import { AccountHooks } from '../../hooks/hooks';
+import { AccountHooks, useLang } from '../../hooks/hooks';
 import { useCreateLog, useLogTypes } from '../../hooks/LogHooks';
 import { defaultSave } from '../../modules/Storage';
 
@@ -20,12 +20,16 @@ const AddTransferForm = (props)=>{
         
         //Form validation
         if(issuingAccount.reserve < amount){
-            Alert.alert("Error", `The issuing account reserve is not sufficient.
-                \nThe reserve of "${issuingAccount.name}" is $${issuingAccount.reserve}.`);
+            Alert.alert("Error", 
+                useLang().transfers.notEnoughReserve.main 
+                +'\n'+ useLang().transfers.notEnoughReserve.theReserveOf 
+                + issuingAccount.name + useLang().transfers.notEnoughReserve.is
+                + issuingAccount.reserve + useLang().transfers.notEnoughReserve.end
+            );
             return;
         }
         if(amount <= 0){
-            Alert.alert("Error", "The amount to be transferred must be greater than \"0\".");
+            Alert.alert("Error", useLang().forms.greaterThan + 0 + '.');
             return;
         }
 
@@ -100,7 +104,7 @@ const AddTransferForm = (props)=>{
                     selectedValue={issuingAccountId}
                     onValueChange={(value, itemIndex) => setIssuingAccountId(value)}
                 >
-                    <Picker.Item color={Colors.inputColor} label="Select the issuing account" value="null" />
+                    <Picker.Item color={Colors.inputColor} label={ useLang().forms.selectIssuing } value="null" />
                     {accountsForSelect}
                 </Picker>
             </View>
@@ -118,7 +122,7 @@ const AddTransferForm = (props)=>{
                     selectedValue={receiverAccountId}
                     onValueChange={(value, itemIndex) => setReceiverAccountId(value)}
                 >
-                    <Picker.Item label="Select the receiver account" value="null" />
+                    <Picker.Item label={ useLang().forms.selectReceiver } value="null" />
                     {accountsForSelect}
                 </Picker>
             </View>
@@ -131,17 +135,17 @@ const AddTransferForm = (props)=>{
     
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Add a new transfer</Text>
+            <Text style={GlobalStyles.title2}>{ useLang().transfers.formTitle }</Text>
             {/* Issuing account selector */}
-            { accounts.length > 0 ? issuingAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            { accounts.length > 0 ? issuingAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{ useLang().tables.noRecords.accounts }</Text>}
             
             {/* Issuing account selector */}
-            { accounts.length > 0 ? receiverAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            { accounts.length > 0 ? receiverAccountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{ useLang().tables.noRecords.accounts }</Text>}
             
             {/* Amount Input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Amount (Example: 17489.99)"
+                placeholder={ useLang().forms.amount }
                 value={""+amount}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -155,14 +159,14 @@ const AddTransferForm = (props)=>{
             
             {
                 amount <= 0 
-                ? <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>Amount must be greater than 0</Text>
+                ? <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{useLang().forms.greaterThan }0</Text>
                 : null
             }
 
             {/* Expense source input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Source (For example: Job)"
+                placeholder={ useLang().forms.source }
                 value={source}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -173,7 +177,7 @@ const AddTransferForm = (props)=>{
             {/* Note input */}
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Note"
+                placeholder={ useLang().forms.note }
                 value={note}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
@@ -188,7 +192,7 @@ const AddTransferForm = (props)=>{
                 onPress={ addButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
-                <Text style={GlobalStyles.formSubmitButtonText}>Add</Text>
+                <Text style={GlobalStyles.formSubmitButtonText}>{ useLang().buttons.add }</Text>
             </TouchableOpacity>
         </View>
     );

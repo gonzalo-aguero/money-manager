@@ -138,5 +138,5 @@ export function useLocale(){
     return locale.split('-')[0];
 }
 export function useLang() {
-    return lang[useLocale()];
+    return undefined !== lang[useLocale()] ? lang[useLocale()] : lang["es"];
 }

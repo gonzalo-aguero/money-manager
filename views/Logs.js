@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList,TouchableOpacity, ScrollView} from 'react-native';
-import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
+import GlobalStyles,{ createTableStyles } from '../modules/GlobalStyles';
 import { 
     useGetLogs,
     useDeleteLog,
@@ -14,17 +14,10 @@ const Logs = ()=>{
     const tableStyles = createTableStyles(3, 150);
     const [logs, setLogs] = useState([]);
     const [selectedLog, selectLog] = useState(false);
-    // const [totalIncomes, setTotalIncomes] = useState(0);
-    // const [totalTransfers, setTotalTransfers] = useState(0);
-    // const [totalExpenses, setTotalExpenses] = useState(0);
 
     const getLogs = async ()=>{
         const result = await useGetLogs();
         setLogs(result);
-        // const filteredLogs = await useGetFilteredLogs(result);
-        // setTotalIncomes(IncomeHooks.useGetTotalIncomes(filteredLogs.incomes));
-        // setTotalTransfers(TransferHooks.useGetTotalTransfers(filteredLogs.transfers));
-        // setTotalExpenses(ExpenseHooks.useGetTotalExpenses(filteredLogs.expenses));
     }
 
     const deleteLog = async ()=>{
@@ -61,17 +54,6 @@ const Logs = ()=>{
                 renderItem={({ item }) => {
                     const itemStyle = useGetLogStyle(item.type);
                     let sign = "";
-                    // switch (item.type) {
-                    //     case useLogTypes.income:
-                    //         sign = '+ ';
-                    //         break;
-                    //     case useLogTypes.expense:
-                    //         sign = '- ';
-                    //         break;
-                    //     case useLogTypes.transfer:
-                    //         sign = '<- ';
-                    //         break;
-                    // }
                     
                     let accountName = item.affectedAccount;
                     if(item.type === useLogTypes.transfer){
@@ -107,20 +89,6 @@ const Logs = ()=>{
             <ScrollView style={GlobalStyles.mainScrollView}>
                 {/* Log detail */}
                 { selectedLog !== false ? useDisplayLogDetail(selectedLog,logs, ()=>selectLog(false) ) : null }
-
-                {/* TOTALS BLOCKS */}
-                {/* <View style={[GlobalStyles.block, {padding: 10}]}>
-                    <Text style={GlobalStyles.title2}>Total incomes</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.goodText]}>{ usePrintAmount(totalIncomes) }</Text>
-                </View>
-                <View style={[GlobalStyles.block, {padding: 10}]}>
-                    <Text style={GlobalStyles.title2}>Total transfers amount</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount,{color: Colors.lightBlue2}]}>{ usePrintAmount(totalTransfers) }</Text>
-                </View>
-                <View style={[GlobalStyles.block, {padding: 10}]}>
-                    <Text style={GlobalStyles.title2}>Total expenses</Text>
-                    <Text style={[GlobalStyles.title2, GlobalStyles.amount, GlobalStyles.badText]}>{ usePrintAmount(totalExpenses) }</Text>
-                </View> */}
             </ScrollView>
         </View>
     );

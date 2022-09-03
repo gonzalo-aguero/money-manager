@@ -1,8 +1,8 @@
 Arguments: 
-  /snap/node/6331/bin/node /snap/node/6331/bin/yarn.js add @react-native-picker/picker@2.4.2 react-native@0.69.5 react-native-web@~0.18.7
+  /snap/node/6331/bin/node /snap/node/6331/bin/yarn.js add expo-updates@~0.14.5
 
 PATH: 
-  /home/gonzalo90fa/Desktop/development-projects/DoubleM/node_modules/.bin:/home/gonzalo90fa/Desktop/development-projects/node_modules/.bin:/home/gonzalo90fa/Desktop/node_modules/.bin:/home/gonzalo90fa/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/home/gonzalo90fa/.npm-global/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/home/gonzalo90fa/Desktop/development-projects/DoubleM/node_modules/.bin:/home/gonzalo90fa/.npm-global/bin:/home/gonzalo90fa/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/lampp/xampp:/home/gonzalo90fa/.config/composer/vendor/bin
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
 Yarn version: 
   1.22.19

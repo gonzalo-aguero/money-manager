@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import GlobalStyles from '../../modules/GlobalStyles';
 import { defaultSave } from '../../modules/Storage';
-import { AccountHooks, useCalculateId } from '../../hooks/hooks';
+import { AccountHooks, useCalculateId, useLang} from '../../hooks/hooks';
+
 const CreateAccountForm = (props)=>{
     let currentAccounts = props.accounts;//Array[]
     const getAccounts = props.getAccounts;//Method()
@@ -38,10 +39,10 @@ const CreateAccountForm = (props)=>{
     }
     return (
         <View style={GlobalStyles.form}>
-            <Text style={GlobalStyles.title2}>Create a new account</Text>
-            <TextInput 
+            <Text style={GlobalStyles.title2}>{ useLang().accounts.formTitle }</Text>
+            <TextInput
                 style={GlobalStyles.formInput}
-                placeholder="Account name"
+                placeholder={ useLang().forms.accountName }
                 value={accountNameInputText}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -51,7 +52,7 @@ const CreateAccountForm = (props)=>{
             />
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Account reserve (Example: 17489.99)"
+                placeholder={ useLang().forms.accountReserve }
                 value={accountReserveInputText}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 onChangeText={ value => {
@@ -64,7 +65,7 @@ const CreateAccountForm = (props)=>{
             />
             <TextInput 
                 style={GlobalStyles.formInput}
-                placeholder="Account description"
+                placeholder={ useLang().forms.accountDescription }
                 value={accountDescriptionInputText}
                 placeholderTextColor={GlobalStyles.formInputPlaceHolder.color}
                 multiline={true}
@@ -78,7 +79,7 @@ const CreateAccountForm = (props)=>{
                 onPress={ submitButtonHandler }
                 style={[GlobalStyles.goodBG, GlobalStyles.formSubmitButton]}
             >
-                <Text style={GlobalStyles.formSubmitButtonText}>Create</Text>
+                <Text style={GlobalStyles.formSubmitButtonText}>{ useLang().buttons.create }</Text>
             </TouchableOpacity>
         </View>
     );

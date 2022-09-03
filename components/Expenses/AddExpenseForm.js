@@ -81,7 +81,7 @@ const AddExpenseForm = (props)=>{
             <Text style={GlobalStyles.title2}>{ useLang().expenses.formTitle }</Text>
             
             {/* Account selector */}
-            { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>You don't have accounts yet</Text>}
+            { accounts.length > 0 ? accountSelector() : <Text style={[GlobalStyles.badText, {textAlign: 'center'}]}>{ useLang().tables.noRecords.accounts }</Text>}
             
             {/* Amount Input */}
             <TextInput 

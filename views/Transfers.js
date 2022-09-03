@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {View, ScrollView, Text, FlatList,TouchableOpacity } from 'react-native';
 import AddTransferForm from '../components/Transfers/AddTransferForm';
 import GlobalStyles,{ createTableStyles, Colors } from '../modules/GlobalStyles';
-import { TransferHooks, usePrintAmount } from '../hooks/hooks';
+import { TransferHooks, usePrintAmount, useLang } from '../hooks/hooks';
 import { useDisplayLogDetail, useDeleteLog } from '../hooks/LogHooks';
 import { Icons, getViewIconImage } from '../modules/Global';
 
@@ -37,7 +37,7 @@ const Transfers = (props)=>{
     return (
         <View style={GlobalStyles.mainContainer}>
             <View style={GlobalStyles.header}>
-                <Text style={GlobalStyles.title}>Transfers</Text>
+                <Text style={GlobalStyles.title}>{ useLang().transfers.title }</Text>
                 <TouchableOpacity onPress={()=> dataForChildren.view.setView("accounts")} style={{
                     position: 'absolute',
                     right: 15,
@@ -54,9 +54,9 @@ const Transfers = (props)=>{
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableHeadCell}>To</Text>
-                        <Text style={tableStyles.tableHeadCell}>Amount</Text>
-                        <Text style={tableStyles.tableHeadCell}>Date</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.to }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.amount }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.date }</Text>
                     </View>
                 )}
             
@@ -72,7 +72,7 @@ const Transfers = (props)=>{
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableCell}>No transfers recorded</Text>
+                        <Text style={tableStyles.tableCell}>{ useLang().tables.noRecords.transfers }</Text>
                     </View>
                 )}
             />
@@ -81,12 +81,12 @@ const Transfers = (props)=>{
             <View style={GlobalStyles.actionBar}>
                 {/* Add expense button */}
                 <TouchableOpacity onPress={ ()=> !addTransferForm ? displayAddTransferForm(true) : displayAddTransferForm(false) }>
-                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addTransferForm ? "Add transfer" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !addTransferForm ? useLang().buttons.addTransfer : useLang().buttons.hideForm }</Text>
                 </TouchableOpacity>
             
                 {/* Delete account button */}
                 <TouchableOpacity disabled={!selectedTransfer ? true : false} onPress={deleteTransfer}>
-                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedTransfer ? GlobalStyles.disableButton : null)]}>Delete</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedTransfer ? GlobalStyles.disableButton : null)]}>{ useLang().buttons.delete }</Text>
                 </TouchableOpacity>
             </View>
 

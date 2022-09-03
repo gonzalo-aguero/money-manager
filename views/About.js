@@ -33,29 +33,33 @@ const About = (props)=>{
             <ScrollView style={GlobalStyles.mainScrollView}>
                 <Text style={[GlobalStyles.title3, {
                     margin: 10,
-                }]}>Hello dear user :),</Text>
+                }]}>Hello dear user,</Text>
                 
                 <Text style={[GlobalStyles.text2, {
                     marginHorizontal: 10,
-                }]}>This App is under <Text style={GlobalStyles.warningText}>development</Text>, so there will be functionalities that will not work. 
+                }]}>This App is under <Text style={GlobalStyles.warningText}>development</Text>, therefore there will be functionalities that will not work. 
                 The current version is 1.2.1</Text>
                 
-                <Text style={[GlobalStyles.title3, {
+                <Text style={[GlobalStyles.title2, {
                     marginHorizontal: 10,
                     marginTop: 50
-                }]}>Functionalities:</Text>
+                }]}>Functionalities Evolution</Text>
                 
                 <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.0.0</Text>
-                    <Text style={[GlobalStyles.text2]}>- Create account</Text>
-                    <Text style={[GlobalStyles.text2]}>- Edit account</Text>
-                    <Text style={[GlobalStyles.text2]}>- Delete account</Text>
-                    <Text style={[GlobalStyles.text2]}>- Add incomes</Text>
-                    <Text style={[GlobalStyles.text2]}>- Add expenses</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.goodText]}>-------------------------- 1.2.1 --------------------------</Text>
+                    <Text style={[GlobalStyles.text2]}>- Spanish or English according to system configuration.</Text>
+                    <Text style={[GlobalStyles.text2]}>- Totals were hidden in the Income, Expenses and Transfers views.</Text>
+                    <Text style={[GlobalStyles.text2]}>- Removed "+", "-" and "{'<'}-" signs.</Text>
                 </View>
                 
                 <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.1.0</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.goodText]}>-------------------------- 1.1.1 --------------------------</Text>
+                    <Text style={[GlobalStyles.text2]}>- See movements detail</Text>
+                    <Text style={[GlobalStyles.text2]}>- Add transfer</Text>
+                </View>
+
+                <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
+                    <Text style={[GlobalStyles.title2, GlobalStyles.goodText]}>-------------------------- 1.1.0 --------------------------</Text>
                     <Text style={[GlobalStyles.text2]}>- See total reserve</Text>
                     <Text style={[GlobalStyles.text2]}>- See total incomes</Text>
                     <Text style={[GlobalStyles.text2]}>- See total expenses</Text>
@@ -63,17 +67,14 @@ const About = (props)=>{
                     <Text style={[GlobalStyles.text2]}>- See movements</Text>
                     <Text style={[GlobalStyles.text2]}>- Remove movement log</Text>
                 </View>
-                
-                <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.1.1</Text>
-                    <Text style={[GlobalStyles.text2]}>- See movements detail</Text>
-                    <Text style={[GlobalStyles.text2]}>- Add transfer</Text>
-                </View>
 
                 <View style={{ marginHorizontal: 10, marginTop: 10 }}> 
-                    <Text style={[GlobalStyles.title3, GlobalStyles.goodText]}>1.2.1</Text>
-                    <Text style={[GlobalStyles.text2]}>- Light Theme</Text>
-                    <Text style={[GlobalStyles.text2]}>- Spanish Version</Text>
+                    <Text style={[GlobalStyles.title2, GlobalStyles.goodText]}>-------------------------- 1.0.0 --------------------------</Text>
+                    <Text style={[GlobalStyles.text2]}>- Create account</Text>
+                    <Text style={[GlobalStyles.text2]}>- Edit account</Text>
+                    <Text style={[GlobalStyles.text2]}>- Delete account</Text>
+                    <Text style={[GlobalStyles.text2]}>- Add incomes</Text>
+                    <Text style={[GlobalStyles.text2]}>- Add expenses</Text>
                 </View>
                 
                 <Text style={[GlobalStyles.text2, {textAlign:'center', marginTop: 100}]}>Developed by GMA Software</Text>

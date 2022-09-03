@@ -13,15 +13,22 @@ export default {
             name: "Name",
             reserve: "Reserve",
             account: "Account",
+            description: "Description",
             amount: "Amount",
             date: "Date",
             to: "To",
             noRecords: {
+                accounts: "No accounts created",
                 expenses: "No expenses recorded",
                 incomes: "No incomes recorded",
                 transfers: "No transfers recorded",
                 logs: "No logs found"
             }
+        },
+        accounts: {
+            title: "Accounts",
+            formTitle: "Create a new account",
+            editFormTitle: "Edit account",
         },
         expenses: {
             title: "Expenses",
@@ -31,6 +38,16 @@ export default {
         incomes: {
             title: "Incomes",
             formTitle: "Add a new income",
+        },
+        transfers: {
+            title: "Transfers",
+            formTitle: "Add a new transfer",
+            notEnoughReserve: {
+                main: "The issuing account reserve is not sufficient.",
+                theReserveOf: "The reserve of \"",
+                is: "\" is $",
+                end: "."
+            }
         },
         logs: {
             title: "Movements",
@@ -43,7 +60,7 @@ export default {
             createAccount: "Create account",
             editAccount: "Edit account",
             add: "Add",
-            create: "Crear",
+            create: "Create",
             delete: "Delete",
             saveChanges: "Save changes",
             close: "Close",
@@ -61,7 +78,7 @@ export default {
             note: "Note",
             source: "Source",
             accountName: "Account name",
-            accountReseve: "Account reserve",
+            accountReserve: "Account reserve",
             accountDescription: "Account description",
         },
         logDetail: {
@@ -70,7 +87,8 @@ export default {
             date: "Date",
             source: "Source",
             note: "Note"
-        }
+        },
+
     },
 
 
@@ -89,15 +107,22 @@ export default {
             name: "Cuenta",
             reserve: "Dinero",
             account: "Cuenta",
+            description: "Descripción",
             amount: "Monto",
             date: "Fecha",
             to: "Enviado a",
             noRecords: {
+                accounts: "No se ha creado ninguna cuenta",
                 expenses: "No hay gastos registrados",
                 incomes: "No hay ingresos registrados",
                 transfers: "No hay transferencias registradas",
                 logs: "No hay movimientos registrados"
             }
+        },
+        accounts: {
+            title: "Cuentas",
+            formTitle: "Crear una nueva cuenta",
+            editFormTitle: "Editar Cuenta",
         },
         expenses: {
             title: "Gastos",
@@ -107,6 +132,16 @@ export default {
         incomes: {
             title: "Ingresos",
             formTitle: "Agregar nuevo ingreso",
+        },
+        transfers: {
+            title: "Transferencias",
+            formTitle: "Agregar transferencia",
+            notEnoughReserve: {
+                main: "El dinero de la cuenta emisora no es suficiente.",
+                theReserveOf: "La reserva de \"",
+                is: "\" es $",
+                end: "."
+            }
         },
         logs: {
             title: "Movimientos",
@@ -137,7 +172,7 @@ export default {
             note: "Nota",
             source: "Origen/Concepto",
             accountName: "Nombre de la cuenta",
-            accountReseve: "Reserva (cant. de dinero)",
+            accountReserve: "Reserva (Cant. de dinero)",
             accountDescription: "Descripción",
         },
         logDetail: {

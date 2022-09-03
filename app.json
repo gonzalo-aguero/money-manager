@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Money Manager",
-    "slug": "Money Manager",
+    "slug": "Money-Manager",
     "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6550ad2e-d2ec-4259-982e-75a30a1295de"
+      }
     }
   }
 }

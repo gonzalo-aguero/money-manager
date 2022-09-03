@@ -4,7 +4,7 @@ import CreateAccountForm from '../components/Accounts/CreateAccountForm';
 import EditAccountForm from '../components/Accounts/EditAccountForm';
 import GlobalStyles,{ createTableStyles, Colors} from '../modules/GlobalStyles';
 import { defaultSave } from '../modules/Storage';
-import { AccountHooks, usePrintAmount } from '../hooks/hooks';
+import { AccountHooks, usePrintAmount, useLang } from '../hooks/hooks';
 import { Icons, getViewIconImage } from '../modules/Global';
 
 const Accounts = (props)=>{
@@ -55,7 +55,7 @@ const Accounts = (props)=>{
     return (
         <View style={GlobalStyles.mainContainer}>
             <View style={GlobalStyles.header}>
-                <Text style={GlobalStyles.title}>Accounts ({accounts !== null ? accounts.length : 0})</Text>
+                <Text style={GlobalStyles.title}>{ useLang().accounts.title } ({accounts !== null ? accounts.length : 0})</Text>
                 <TouchableOpacity onPress={()=> dataForChildren.view.setView("transfers")} style={{
                     position: 'absolute',
                     right: 15,
@@ -70,23 +70,23 @@ const Accounts = (props)=>{
                 ListHeaderComponent={()=>(
                     // List header
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableHeadCell}>Name</Text>
-                        <Text style={tableStyles.tableHeadCell}>Reserve</Text>
-                        <Text style={tableStyles.tableHeadCell}>Description</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.account }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.reserve }</Text>
+                        <Text style={tableStyles.tableHeadCell}>{ useLang().tables.description }</Text>
                     </View>
                 )}
                 renderItem={({ item }) => (
                     // List item
                     <TouchableOpacity style={[tableStyles.tableRow, (selectedAccount === item.id ? tableStyles.selectedItem : null )]} onPress={ ()=> selectAccount(item.id) }>
-                        <Text style={tableStyles.tableCell}>{item.name}</Text>
+                        <Text style={tableStyles.tableCell}>{ item.name }</Text>
                         <Text style={[tableStyles.tableCell,GlobalStyles.goodText]}>{usePrintAmount(item.reserve)}</Text>
-                        <Text style={tableStyles.tableCell}>{item.description}</Text>
+                        <Text style={tableStyles.tableCell}>{ item.description }</Text>
                     </TouchableOpacity>
                 )}
                 ListEmptyComponent={() => (
                     // Empty list message
                     <View style={tableStyles.tableRow}>
-                        <Text style={tableStyles.tableCell}>No accounts created</Text>
+                        <Text style={tableStyles.tableCell}>{ useLang().tables.noRecords.accounts }</Text>
                     </View>
                 )}
             />
@@ -95,17 +95,17 @@ const Accounts = (props)=>{
             <View style={GlobalStyles.actionBar}>
                 {/* Create account button */}
                 <TouchableOpacity onPress={ ()=> !createAccountForm ? displayCreateAccountForm(true) : displayCreateAccountForm(false) }>
-                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !createAccountForm ? "Create account" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.goodBG]}>{ !createAccountForm ? useLang().buttons.createAccount : useLang().buttons.hideForm }</Text>
                 </TouchableOpacity>
 
                 {/* Edit account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={ ()=> !editAccountForm ? displayEditAccountForm(true) : displayEditAccountForm(false) }>
-                    <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ !editAccountForm ? "Edit account" : "Hide form" }</Text>
+                    <Text style={[GlobalStyles.button, {backgroundColor: Colors.lightBlue, color: 'white'}, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ !editAccountForm ? useLang().buttons.editAccount : useLang().buttons.hideForm }</Text>
                 </TouchableOpacity>
                 
                 {/* Delete account button */}
                 <TouchableOpacity disabled={!selectedAccount ? true : false} onPress={deleteAccount}>
-                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedAccount ? GlobalStyles.disableButton : null)]}>Delete</Text>
+                    <Text style={[GlobalStyles.button, GlobalStyles.badBG, (!selectedAccount ? GlobalStyles.disableButton : null)]}>{ useLang().buttons.delete }</Text>
                 </TouchableOpacity>
             </View>
 
